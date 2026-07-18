@@ -39,6 +39,12 @@
             background: #cbd5e1;
             border-radius: 9999px;
         }
+        .quiz-option {
+            transition: all 0.15s ease-in-out;
+        }
+        .quiz-option:hover {
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body class="min-h-screen text-slate-800 flex flex-col items-center justify-between pb-24 relative overflow-x-hidden">
@@ -62,10 +68,14 @@
         </header>
 
         <!-- 개념 요점 정리 학습 페이지 연결 버튼 -->
-        <div class="w-full">
-            <button type="button" id="btn-go-study" class="interactive-btn w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-extrabold text-sm py-4 rounded-full shadow-md shadow-amber-100 flex items-center justify-center gap-2">
+        <div class="w-full grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <button type="button" id="btn-go-study" class="interactive-btn w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-extrabold text-sm py-4 rounded-full shadow-md flex items-center justify-center gap-2">
                 <i class="fa-solid fa-book-open animate-bounce"></i> 
-                <span>💡 파이썬 6대 핵심 자료형 먼저 공부하기</span>
+                <span>💡 핵심 6대 자료형 공부방</span>
+            </button>
+            <button type="button" id="btn-go-quiz" class="interactive-btn w-full bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-600 hover:to-emerald-600 text-white font-extrabold text-sm py-4 rounded-full shadow-md flex items-center justify-center gap-2">
+                <i class="fa-solid fa-gamepad"></i> 
+                <span>🎯 AI 실시간 브레인 퀴즈방</span>
             </button>
         </div>
 
@@ -75,7 +85,7 @@
                 <span class="w-8 h-8 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-black text-sm">1</span>
                 <div>
                     <h2 class="text-base font-bold text-slate-800">활동 1: 학습자 정보 등록</h2>
-                    <p class="text-xs text-slate-400">연구지에 학번과 이름을 정확히 등록해주세요.</p>
+                    <p class="text-xs text-slate-400">학번과 이름을 정확하게 입력해 주세요.</p>
                 </div>
             </div>
             
@@ -105,7 +115,7 @@
                 <span class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-black text-sm">2</span>
                 <div>
                     <h2 class="text-base font-bold text-slate-800">활동 2: 기본 매칭 연구</h2>
-                    <p class="text-xs text-slate-400">제시되는 5가지 실생활 데이터의 올바른 파이썬 자료형을 연결하세요.</p>
+                    <p class="text-xs text-slate-400">5가지 실생활 데이터의 올바른 파이썬 자료형을 연결하세요.</p>
                 </div>
             </div>
 
@@ -229,7 +239,7 @@
                     <span class="w-8 h-8 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center font-black text-sm">3</span>
                     <div>
                         <h2 class="text-base font-bold text-slate-800">활동 3: 스페셜 랜덤 도전</h2>
-                        <p class="text-xs text-slate-400">매번 새롭고 흥미진진한 데이터 문제가 배정됩니다.</p>
+                        <p class="text-xs text-slate-400">무작위 배정되는 실생활 데이터를 해석해봅시다.</p>
                     </div>
                 </div>
                 <button type="button" id="btn-shuffle" class="interactive-btn text-xs font-black text-pink-600 bg-pink-50 hover:bg-pink-100 px-4 py-2.5 rounded-full border border-pink-100 flex items-center gap-1.5 shadow-sm">
@@ -267,35 +277,41 @@
                 </label>
                 <textarea id="reason-f" rows="3" 
                           class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-xs transition duration-150 placeholder-slate-400 resize-none leading-relaxed font-medium"
-                          placeholder="예: 소수점을 표현해야 하는 미세먼지 측정치는 정밀한 계산이 필요하므로 정수(int)가 아닌 실수형(float)이 최적입니다."></textarea>
+                          placeholder="예: 소수점을 표현해야 하는 측정 데이터는 정수가 아닌 실수(float)로 선언하는 것이 정밀 계산상 적절합니다."></textarea>
             </div>
 
-            <!-- AI 피드백 버튼 및 결과 표시창 -->
+            <!-- AI 피드백 버튼, 음성 재생 및 결과 표시창 -->
             <div class="w-full mt-1">
                 <button type="button" id="btn-ai-feedback-f" class="interactive-btn w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-extrabold text-xs py-4 rounded-full shadow-md flex items-center justify-center gap-2">
                     <i class="fa-solid fa-wand-magic-sparkles animate-pulse"></i>
                     <span>AI 튜터에게 내 답변 피드백 받기</span>
                 </button>
                 <div id="ai-feedback-box-f" class="hidden mt-3 p-4 bg-purple-50/60 rounded-2xl border border-purple-100 text-xs text-slate-700 leading-relaxed transition-all duration-300">
-                    <div class="flex items-center gap-1.5 font-extrabold text-purple-700 mb-1.5">
-                        <i class="fa-solid fa-robot"></i> AI 튜터의 실시간 코칭
+                    <div class="flex items-center justify-between font-extrabold text-purple-700 mb-1.5">
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-robot"></i> AI 튜터의 실시간 코칭</span>
+                        <!-- 오디오 듣기 버튼 추가 -->
+                        <button type="button" id="btn-play-tts-feedback" class="interactive-btn px-3 py-1 bg-purple-600 text-white rounded-full text-[10px] flex items-center gap-1">
+                            <i class="fa-solid fa-volume-high"></i> 음성으로 듣기
+                        </button>
                     </div>
                     <p id="ai-feedback-text-f" class="font-medium whitespace-pre-line text-slate-600">기다리는 중...</p>
                 </div>
             </div>
         </section>
 
-        <!-- 활동 4: 자율 창의 데이터 설계 -->
+        <!-- 활동 4: 자율 창의 데이터 설계 & AI 이미지 데이터 변환 분석 -->
         <section class="w-full bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col gap-5">
             <div class="flex items-center gap-3 border-b border-slate-50 pb-4">
                 <span class="w-8 h-8 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center font-black text-sm">4</span>
                 <div>
-                    <h2 class="text-base font-bold text-slate-800">활동 4: 자율 창의 데이터 설계</h2>
-                    <p class="text-xs text-slate-400">교실 밖 실생활의 나만의 신선한 데이터를 찾아 설계하고 분석해보세요.</p>
+                    <h2 class="text-base font-bold text-slate-800">활동 4: 자율 설계 & AI 이미지 분석</h2>
+                    <p class="text-xs text-slate-400">나만의 데이터를 구상하거나 사진을 찍어 AI가 변수를 감지하도록 해봅시다.</p>
                 </div>
             </div>
 
+            <!-- 방식 1: 수동 텍스트 구상 -->
             <div class="p-5 bg-teal-50/20 rounded-2xl border border-teal-100/40 flex flex-col gap-4">
+                <span class="text-xs font-extrabold text-teal-800 block border-b border-teal-100/50 pb-1">방법 A: 직접 텍스트로 데이터 구조 설계하기</span>
                 <div>
                     <label for="custom-data-name" class="block text-xs font-bold text-teal-800 mb-2 pl-1">
                         1단계: 내가 정의한 실생활 데이터 이름
@@ -331,15 +347,33 @@
                 </div>
             </div>
 
-            <!-- 내가 설계한 데이터 AI 분석 버튼 및 결과창 -->
+            <!-- 방식 2: 멀티모달 이미지 감지 -->
+            <div class="p-5 bg-indigo-50/20 rounded-2xl border border-indigo-100/40 flex flex-col gap-4 mt-2">
+                <span class="text-xs font-extrabold text-indigo-800 block border-b border-indigo-100/50 pb-1">방법 B: 실생활 화면/사진 업로드하여 AI 변수 자동 추출하기</span>
+                <p class="text-[11px] text-slate-500 leading-normal">
+                    스마트 워치 화면, 버스 전광판, 가게 영수증 등 숫자가 나온 화면을 캡처하거나 업로드하면 AI가 파이썬 변수 리스트를 알아서 구성해 줍니다!
+                </p>
+                <div class="flex flex-col items-center justify-center border-2 border-dashed border-indigo-200 rounded-2xl p-4 bg-white hover:bg-indigo-50/20 transition cursor-pointer relative" id="image-dropzone">
+                    <input type="file" id="image-file-input" accept="image/*" class="absolute inset-0 opacity-0 cursor-pointer">
+                    <i class="fa-solid fa-camera text-2xl text-indigo-400 mb-2"></i>
+                    <span class="text-xs font-bold text-indigo-600" id="image-upload-label">여기를 터치하여 카메라 촬영 혹은 영수증 사진 업로드</span>
+                    <span class="text-[10px] text-slate-400 mt-1">PNG, JPG 이미지 파일 지원</span>
+                    <img id="image-preview" class="hidden mt-3 max-h-36 rounded-lg border shadow-sm">
+                </div>
+            </div>
+
+            <!-- AI 검토 분석 실행 -->
             <div class="w-full mt-1">
-                <button type="button" id="btn-ai-custom-analyze" class="interactive-btn w-full bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-extrabold text-xs py-4 rounded-full shadow-md flex items-center justify-center gap-2">
+                <button type="button" id="btn-ai-custom-analyze" class="interactive-btn w-full bg-gradient-to-r from-teal-500 to-indigo-600 hover:from-teal-600 hover:to-indigo-700 text-white font-extrabold text-xs py-4 rounded-full shadow-md flex items-center justify-center gap-2">
                     <i class="fa-solid fa-brain"></i>
-                    <span>내가 설계한 데이터 AI에게 검토 받기</span>
+                    <span>내가 설계한 방식 / 업로드 사진 AI에게 검토 받기</span>
                 </button>
                 <div id="ai-custom-box" class="hidden mt-3 p-4 bg-teal-50/60 rounded-2xl border border-teal-100 text-xs text-slate-700 leading-relaxed transition-all duration-300">
-                    <div class="flex items-center gap-1.5 font-extrabold text-teal-700 mb-1.5">
-                        <i class="fa-solid fa-graduation-cap"></i> AI 코치의 친절한 한마디
+                    <div class="flex items-center justify-between font-extrabold text-teal-700 mb-1.5">
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-graduation-cap"></i> AI 코치의 분석 의견</span>
+                        <button type="button" id="btn-play-tts-custom" class="interactive-btn px-3 py-1 bg-teal-600 text-white rounded-full text-[10px] flex items-center gap-1">
+                            <i class="fa-solid fa-volume-high"></i> 음성으로 듣기
+                        </button>
                     </div>
                     <p id="ai-custom-text" class="font-medium whitespace-pre-line text-slate-600">분석 중...</p>
                 </div>
@@ -354,7 +388,7 @@
                 <span>선생님에게 배달하기</span>
             </button>
             <p class="text-center text-[11px] text-slate-400 mt-3 font-medium">
-                <i class="fa-solid fa-circle-check text-emerald-500"></i> 전송 완료 시 실시간 학습 연구 기록 보관함에 즉시 축적됩니다.
+                <i class="fa-solid fa-circle-check text-emerald-500"></i> 전송 완료 시 실시간 학습 연구 기록 보관함에 즉시 누적됩니다.
             </p>
         </div>
     </div>
@@ -398,7 +432,7 @@
                         <h3 class="font-extrabold text-slate-800 text-sm">문자열 (String)</h3>
                     </div>
                     <p class="text-xs text-slate-600 leading-relaxed font-medium">
-                        키보드로 치는 모든 일반적인 문자 데이터입니다. 파이썬에서는 따옴표(<code class="text-indigo-700 bg-indigo-100/50 px-1 rounded font-mono">' '</code> 또는 <code class="text-indigo-700 bg-indigo-100/50 px-1 rounded font-mono">" "</code>)로 감싸서 문자임을 명시합니다.
+                        일반 문자의 데이터입니다. 파이썬에서는 따옴표(<code class="text-indigo-700 bg-indigo-100/50 px-1 rounded font-mono">' '</code> 또는 <code class="text-indigo-700 bg-indigo-100/50 px-1 rounded font-mono">" "</code>)로 감싸 문자임을 구분합니다.
                     </p>
                     <div class="bg-white/80 p-3 rounded-xl border border-indigo-100/30 text-xs text-slate-700 leading-snug">
                         <span class="text-[10px] text-indigo-600 font-extrabold block mb-1">💡 주로 사용되는 데이터 예시</span>
@@ -416,7 +450,7 @@
                         <h3 class="font-extrabold text-slate-800 text-sm">정수 (Integer)</h3>
                     </div>
                     <p class="text-xs text-slate-600 leading-relaxed font-medium">
-                        소수점이 전혀 포함되지 않은 깔끔하게 맞아떨어지는 숫자형 데이터입니다. 양수, 음수, 0을 모두 표현할 수 있습니다.
+                        소수점이 전혀 포함되지 않은 정수형 숫자 데이터입니다. 양수, 음수, 0을 표현할 수 있습니다.
                     </p>
                     <div class="bg-white/80 p-3 rounded-xl border border-purple-100/30 text-xs text-slate-700 leading-snug">
                         <span class="text-[10px] text-purple-600 font-extrabold block mb-1">💡 주로 사용되는 데이터 예시</span>
@@ -434,7 +468,7 @@
                         <h3 class="font-extrabold text-slate-800 text-sm">실수 (Floating-point)</h3>
                     </div>
                     <p class="text-xs text-slate-600 leading-relaxed font-medium">
-                        소수점을 포함하고 있는 정밀한 소수 데이터입니다. 수학적 연산 및 정확한 상태 값을 나타낼 때 최적입니다.
+                        소수점을 포함하고 있는 정밀 소수형 데이터입니다. 수학적 측정값 표현에 최적입니다.
                     </p>
                     <div class="bg-white/80 p-3 rounded-xl border border-pink-100/30 text-xs text-slate-700 leading-snug">
                         <span class="text-[10px] text-pink-600 font-extrabold block mb-1">💡 주로 사용되는 데이터 예시</span>
@@ -452,7 +486,7 @@
                         <h3 class="font-extrabold text-slate-800 text-sm">참/거짓 (Boolean)</h3>
                     </div>
                     <p class="text-xs text-slate-600 leading-relaxed font-medium">
-                        세상의 모든 상황을 오직 참(<code class="font-bold text-emerald-700 font-mono">True</code>) 또는 거짓(<code class="font-bold text-emerald-700 font-mono">False</code>)으로만 엄격하게 매핑하여 구분 짓는 가장 단순하면서 강력한 자료형입니다.
+                        참(<code class="font-bold text-emerald-700 font-mono">True</code>) 또는 거짓(<code class="font-bold text-emerald-700 font-mono">False</code>)으로만 상태를 표기하는 자료형입니다.
                     </p>
                     <div class="bg-white/80 p-3 rounded-xl border border-emerald-100/30 text-xs text-slate-700 leading-snug">
                         <span class="text-[10px] text-emerald-600 font-extrabold block mb-1">💡 주로 사용되는 데이터 예시</span>
@@ -470,7 +504,7 @@
                         <h3 class="font-extrabold text-slate-800 text-sm">리스트 (List)</h3>
                     </div>
                     <p class="text-xs text-slate-600 leading-relaxed font-medium">
-                        대괄호(<code class="font-bold text-amber-700 font-mono">[ ]</code>) 안에 여러 개의 데이터를 쉼표로 연결하여 한 번에 가두어 관리하는 순서형 상자 데이터입니다.
+                        대괄호(<code class="font-bold text-amber-700 font-mono">[ ]</code>) 안에 여러 데이터를 쉼표로 연결하여 묶어두는 모음 구조입니다.
                     </p>
                     <div class="bg-white/80 p-3 rounded-xl border border-amber-100/30 text-xs text-slate-700 leading-snug">
                         <span class="text-[10px] text-amber-600 font-extrabold block mb-1">💡 주로 사용되는 데이터 예시</span>
@@ -488,7 +522,7 @@
                         <h3 class="font-extrabold text-slate-800 text-sm">딕셔너리 (Dictionary)</h3>
                     </div>
                     <p class="text-xs text-slate-600 leading-relaxed font-medium">
-                        중괄호(<code class="font-bold text-teal-700 font-mono">{ }</code>) 안에 사전처럼 고유 열쇠인 키(<code class="font-mono">Key</code>)와 그에 해당하는 값(<code class="font-mono">Value</code>)을 한 쌍으로 묶은 매핑 데이터형입니다.
+                        중괄호(<code class="font-bold text-teal-700 font-mono">{ }</code>) 안에 사전처럼 고유 열쇠 키(<code class="font-mono">Key</code>)와 값(<code class="font-mono">Value</code>)을 연결해 묶은 매핑 데이터형입니다.
                     </p>
                     <div class="bg-white/80 p-3 rounded-xl border border-teal-100/30 text-xs text-slate-700 leading-snug">
                         <span class="text-[10px] text-teal-600 font-extrabold block mb-1">💡 주로 사용되는 데이터 예시</span>
@@ -501,12 +535,14 @@
 
                 <!-- AI 파이썬 튜터 실시간 챗봇 -->
                 <div class="p-5 bg-gradient-to-br from-indigo-50 via-pink-50 to-amber-50 rounded-2xl border border-indigo-100/40 flex flex-col gap-3">
-                    <div class="flex items-center gap-2">
-                        <span class="text-[10px] bg-indigo-600 text-white font-black px-2.5 py-1 rounded-full uppercase tracking-widest animate-pulse font-mono">LIVE CHAT</span>
-                        <h3 class="font-extrabold text-slate-800 text-sm">🐍 파이썬 AI 튜터 챗봇</h3>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="text-[10px] bg-indigo-600 text-white font-black px-2.5 py-1 rounded-full uppercase tracking-widest animate-pulse font-mono">LIVE CHAT</span>
+                            <h3 class="font-extrabold text-slate-800 text-sm">🐍 파이썬 AI 튜터 챗봇</h3>
+                        </div>
                     </div>
                     <p class="text-xs text-slate-600 leading-normal font-medium">
-                        "리스트와 딕셔너리의 차이점은?", "왜 학번은 정수보다 문자열이 나을까요?" 등 자료형에 관해 궁금한 점을 질문해보세요!
+                        파이썬 자료형에 대해 궁금한 점을 질문해보세요! (예: 리스트와 딕셔너리의 큰 차이는?)
                     </p>
                     <div class="flex gap-2">
                         <input type="text" id="ai-chat-input" class="flex-1 px-4 py-3 bg-white border border-slate-200 rounded-full text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium" placeholder="질문을 입력하세요...">
@@ -515,7 +551,12 @@
                         </button>
                     </div>
                     <div id="ai-chat-response-box" class="hidden p-4 bg-white/90 rounded-2xl border border-indigo-100/30 text-xs text-slate-700 leading-relaxed font-medium">
-                        <p class="font-bold text-[10px] text-indigo-600 uppercase tracking-widest mb-1">AI 튜터 답변:</p>
+                        <div class="flex items-center justify-between mb-1">
+                            <p class="font-bold text-[10px] text-indigo-600 uppercase tracking-widest">AI 튜터 답변:</p>
+                            <button type="button" id="btn-play-tts-chat" class="interactive-btn px-2.5 py-1 bg-indigo-100 text-indigo-700 rounded-full text-[10px] flex items-center gap-1">
+                                <i class="fa-solid fa-volume-high"></i> 듣기
+                            </button>
+                        </div>
                         <p id="ai-chat-response-text" class="whitespace-pre-line text-slate-600">...</p>
                     </div>
                 </div>
@@ -525,6 +566,89 @@
         <!-- 되돌아가기 컴포넌트 버튼 -->
         <div class="w-full mb-10">
             <button type="button" id="btn-back-from-study" class="interactive-btn w-full bg-slate-900 hover:bg-slate-850 text-white font-extrabold text-base py-4 rounded-full shadow-lg flex items-center justify-center gap-2.5">
+                <i class="fa-solid fa-arrow-left"></i> 
+                <span>이전 페이지로 돌아가기</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- AI 실시간 브레인 퀴즈방 뷰 (초기 숨김) -->
+    <div id="quiz-view" class="w-full max-w-2xl px-4 flex flex-col items-center gap-5 flex-1 mt-4 hidden">
+        <header class="w-full">
+            <div class="bg-gradient-to-tr from-teal-600 via-emerald-600 to-cyan-500 rounded-3xl p-6 shadow-lg text-white relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full blur-xl -translate-x-4 -translate-y-4"></div>
+                
+                <div class="relative z-10 flex flex-col items-center text-center">
+                    <span class="bg-white/20 text-white text-[10px] md:text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-widest mb-3 backdrop-blur-md">
+                        🎯 MULTI-TURNS AI QUIZ
+                    </span>
+                    <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight mb-2 drop-shadow-sm">AI 실시간 맞춤형 퀴즈방</h1>
+                    <p class="text-xs md:text-sm text-teal-50 font-medium">
+                        내 수준에 맞게 Gemini가 생성하는 데이터 매칭 퀴즈를 풀어보세요!
+                    </p>
+                </div>
+            </div>
+        </header>
+
+        <!-- 퀴즈 컨트롤 카드 -->
+        <section class="w-full bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col gap-5">
+            <div class="flex items-center justify-between border-b border-slate-50 pb-4">
+                <div class="flex items-center gap-3">
+                    <span class="w-8 h-8 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center font-black text-sm">
+                        <i class="fa-solid fa-gamepad"></i>
+                    </span>
+                    <div>
+                        <h2 class="text-base font-bold text-slate-800">나의 인공지능 학습 점검</h2>
+                        <p class="text-xs text-slate-400">오른쪽 생성 버튼을 누르면 AI 맞춤 퀴즈 3문항이 발급됩니다.</p>
+                    </div>
+                </div>
+                <button type="button" id="btn-generate-quiz" class="interactive-btn text-xs font-black text-teal-700 bg-teal-50 hover:bg-teal-100 px-4 py-2.5 rounded-full border border-teal-100 flex items-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-sparkles animate-pulse"></i> 퀴즈 출제하기
+                </button>
+            </div>
+
+            <!-- 퀴즈 컨텐츠 영역 -->
+            <div id="quiz-container" class="hidden flex flex-col gap-6">
+                <!-- 퀴즈 문항 정보 -->
+                <div class="p-5 bg-gradient-to-r from-teal-50/40 to-emerald-50/20 rounded-2xl border border-teal-100/50">
+                    <div class="flex items-center justify-between mb-3">
+                        <span id="quiz-num-indicator" class="text-xs font-extrabold text-teal-700 bg-teal-100/50 px-3 py-1 rounded-full">1 / 3번 문항</span>
+                        <span id="quiz-score-indicator" class="text-xs font-bold text-slate-500">현재 점수: 0점</span>
+                    </div>
+                    <h3 id="quiz-question-title" class="font-extrabold text-slate-800 text-sm leading-snug">질문 로딩중...</h3>
+                </div>
+
+                <!-- 퀴즈 선택지 -->
+                <div class="flex flex-col gap-3" id="quiz-options-container">
+                    <!-- 자바스크립트 동적 주입 -->
+                </div>
+
+                <!-- 해설 영역 -->
+                <div id="quiz-explanation-box" class="hidden p-4 bg-slate-50 rounded-2xl border text-xs text-slate-600">
+                    <div class="flex items-center gap-2 font-bold mb-2" id="quiz-result-heading">
+                        <!-- O / X 결과 표시 -->
+                    </div>
+                    <p id="quiz-explanation-text">해설 내용</p>
+                    <div class="flex justify-between items-center mt-3 pt-2.5 border-t border-slate-200">
+                        <button type="button" id="btn-play-tts-quiz" class="interactive-btn px-3 py-1 bg-slate-200 text-slate-700 rounded-full text-[10px] flex items-center gap-1">
+                            <i class="fa-solid fa-volume-high"></i> 설명 음성 듣기
+                        </button>
+                        <button type="button" id="btn-next-quiz" class="interactive-btn px-5 py-2.5 bg-teal-600 hover:bg-teal-500 text-white font-extrabold rounded-full text-xs shadow-md">
+                            다음 문제 넘어가기 <i class="fa-solid fa-chevron-right ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="quiz-empty-state" class="py-12 flex flex-col items-center justify-center text-center text-slate-400 font-bold">
+                <i class="fa-solid fa-circle-question text-5xl text-slate-200 mb-3"></i>
+                우측 상단 [퀴즈 출제하기] 버튼을 눌러서<br>AI 실시간 퀴즈를 즉석 생성해보세요!
+            </div>
+        </section>
+
+        <!-- 되돌아가기 컴포넌트 버튼 -->
+        <div class="w-full mb-10">
+            <button type="button" id="btn-back-from-quiz" class="interactive-btn w-full bg-slate-900 hover:bg-slate-850 text-white font-extrabold text-base py-4 rounded-full shadow-lg flex items-center justify-center gap-2.5">
                 <i class="fa-solid fa-arrow-left"></i> 
                 <span>이전 페이지로 돌아가기</span>
             </button>
@@ -560,7 +684,7 @@
             </div>
         </header>
 
-        <!-- API KEY 관리 설정 창 추가 -->
+        <!-- API KEY 관리 설정 창 -->
         <div class="bg-slate-850 p-5 rounded-3xl border border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-300">
             <div class="flex items-center gap-3">
                 <span class="w-10 h-10 rounded-full bg-slate-800 text-amber-400 flex items-center justify-center text-lg">
@@ -568,7 +692,7 @@
                 </span>
                 <div>
                     <h4 class="text-xs font-bold text-white">Gemini API 키 실시간 연동 설정</h4>
-                    <p class="text-[11px] text-slate-400">API 키 미설정 시 교과 진단 엔진(Rule-based Fallback)이 분석을 성실히 대행합니다.</p>
+                    <p class="text-[11px] text-slate-400">API 키 미설정 시 교과 진단 엔진(Rule-based Fallback)이 분석을 대행합니다.</p>
                 </div>
             </div>
             <div class="flex gap-2 w-full sm:w-auto">
@@ -743,7 +867,7 @@
             { title: "어느 한 학생의 구체적 인적 사항 정보", desc: "예시: {'이름': '홍길동', '나이': 18, '성별': '남'}", answer: "dict" }
         ];
 
-        // 랜덤 미션 정답 매칭을 위해 질문과 정답 맵 생성
+        // 랜덤 미션 정답 매칭 맵
         const answerKey = {
             "우리 동네 오늘의 실시간 대기 미세먼지 수치 데이터": "float",
             "우리 학급 스마트 칠판 전원의 켜짐/꺼짐 정보 상태": "bool",
@@ -755,12 +879,22 @@
         };
 
         let currentRandomIdx = 0;
-        let fetchedLogs = []; // 구글 시트로부터 동적 보관할 응답 리스트 캐시
+        let fetchedLogs = []; // 구글 시트 데이터 캐시
+        let currentUploadedImageBase64 = ""; // 멀티모달용 이미지 데이터 보관
+
+        // AI 퀴즈 데이터 보관
+        let quizQuestions = [];
+        let currentQuizIndex = 0;
+        let quizScore = 0;
+
+        // 음성 데이터를 재생할 오디오 객체
+        let currentAudio = null;
 
         // 화면 뷰 전환용 DOM
         const studentView = document.getElementById('student-view');
         const teacherView = document.getElementById('teacher-view');
         const learningView = document.getElementById('learning-view'); 
+        const quizView = document.getElementById('quiz-view');
         
         // 입력 컨트롤 DOM
         const studentNameInput = document.getElementById('student-name');
@@ -785,6 +919,21 @@
         const btnGoStudy = document.getElementById('btn-go-study');
         const btnBackFromStudy = document.getElementById('btn-back-from-study');
         
+        // 퀴즈 트리거 DOM
+        const btnGoQuiz = document.getElementById('btn-go-quiz');
+        const btnBackFromQuiz = document.getElementById('btn-back-from-quiz');
+        const btnGenerateQuiz = document.getElementById('btn-generate-quiz');
+        const quizContainer = document.getElementById('quiz-container');
+        const quizEmptyState = document.getElementById('quiz-empty-state');
+        const quizNumIndicator = document.getElementById('quiz-num-indicator');
+        const quizScoreIndicator = document.getElementById('quiz-score-indicator');
+        const quizQuestionTitle = document.getElementById('quiz-question-title');
+        const quizOptionsContainer = document.getElementById('quiz-options-container');
+        const quizExplanationBox = document.getElementById('quiz-explanation-box');
+        const quizResultHeading = document.getElementById('quiz-result-heading');
+        const quizExplanationText = document.getElementById('quiz-explanation-text');
+        const btnNextQuiz = document.getElementById('btn-next-quiz');
+
         // 모달 및 피드백 DOM
         const customModal = document.getElementById('custom-modal');
         const modalMessage = document.getElementById('modal-message');
@@ -813,9 +962,14 @@
         const inputApiKey = document.getElementById('input-api-key');
         const btnSaveKey = document.getElementById('btn-save-key');
 
+        // 이미지 드롭존 관련 DOM
+        const imageDropzone = document.getElementById('image-dropzone');
+        const imageFileInput = document.getElementById('image-file-input');
+        const imagePreview = document.getElementById('image-preview');
+        const imageUploadLabel = document.getElementById('image-upload-label');
+
         window.onload = function() {
             setRandomQuestion();
-            // 로컬에 저장되어 있는 API 키 확인 및 입력 복원
             if (localStorage.getItem('GEMINI_API_KEY')) {
                 inputApiKey.value = localStorage.getItem('GEMINI_API_KEY');
             }
@@ -825,7 +979,7 @@
         btnSaveKey.addEventListener('click', () => {
             const keyVal = inputApiKey.value.trim();
             localStorage.setItem('GEMINI_API_KEY', keyVal);
-            alertToast("API 키가 브라우저 보안 저장소에 안전하게 세팅되었습니다! 🔑");
+            alertToast("API 키가 브라우저 보안 저장소에 세팅되었습니다! 🔑");
         });
 
         // 학습 페이지 이동 제어 및 복귀 이벤트
@@ -841,7 +995,20 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // 구글 스크립트 처리 중임을 암시하는 글로벌 로더 제어
+        // 퀴즈방 페이지 이동 제어 및 복귀 이벤트
+        btnGoQuiz.addEventListener('click', () => {
+            studentView.classList.add('hidden');
+            quizView.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        btnBackFromQuiz.addEventListener('click', () => {
+            quizView.classList.add('hidden');
+            studentView.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // 구글 스크립트 처리 중 글로벌 로더 제어
         function showLoader(visible, title = "구글 시트와 동기화 중...", desc = "데이터 연결이 진행 중입니다. 잠시만 기다려주세요.") {
             const loader = document.getElementById('global-loader');
             const titleEl = document.getElementById('loader-title');
@@ -897,6 +1064,121 @@
                 toast.classList.add('scale-90', 'opacity-0');
                 setTimeout(() => toast.remove(), 300);
             }, 3000);
+        }
+
+        // 이미지 업로드 처리
+        imageFileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                currentUploadedImageBase64 = event.target.result.split(',')[1];
+                imagePreview.src = event.target.result;
+                imagePreview.classList.remove('hidden');
+                imageUploadLabel.textContent = `사진 등록 완료: ${file.name}`;
+                alertToast("카메라/이미지 업로드 성공! AI에게 검토를 받아보세요. 📸");
+            };
+            reader.readAsDataURL(file);
+        });
+
+        // PCM 16bit 오디오 데이터를 WAV 컨테이너로 변환하는 오디오 포매터
+        function pcmToWav(pcm16Data, sampleRate) {
+            const buffer = new ArrayBuffer(44 + pcm16Data.length * 2);
+            const view = new DataView(buffer);
+            view.setUint32(0, 0x52494646, false); // "RIFF"
+            view.setUint32(4, 36 + pcm16Data.length * 2, true);
+            view.setUint32(8, 0x57415645, false); // "WAVE"
+            view.setUint32(12, 0x666d7420, false); // "fmt "
+            view.setUint32(16, 16, true);
+            view.setUint16(20, 1, true); // PCM = 1
+            view.setUint16(22, 1, true); // Mono
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, sampleRate * 2, true);
+            view.setUint16(32, 2, true);
+            view.setUint16(34, 16, true);
+            view.setUint32(36, 0x64617461, false); // "data"
+            view.setUint32(40, pcm16Data.length * 2, true);
+            
+            let offset = 44;
+            for (let i = 0; i < pcm16Data.length; i++, offset += 2) {
+                view.setInt16(offset, pcm16Data[i], true);
+            }
+            return new Blob([buffer], { type: 'audio/wav' });
+        }
+
+        function base64ToArrayBuffer(base64) {
+            const binaryString = atob(base64);
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            return bytes.buffer;
+        }
+
+        // Gemini TTS API를 통한 실시간 음성 읽기
+        async function playVoice(text) {
+            const apiKey = localStorage.getItem('GEMINI_API_KEY') || "";
+            if (!apiKey) {
+                alertToast("음성을 재생하려면 선생님 전용 페이지에서 Gemini API 키를 저장해 주세요! 🔑");
+                return;
+            }
+
+            if (currentAudio) {
+                currentAudio.pause();
+            }
+
+            try {
+                showLoader(true, "AI 목소리 합성 중...", "Gemini TTS 엔진이 친근한 음성을 합성하고 있습니다.");
+                
+                // 한국어 자동 지원 및 따뜻한 여성 목소리인 'Zephyr' prebuilt voice 채택
+                const payload = {
+                    contents: [{
+                        parts: [{ text: `Say cheerfully in Korean: ${text}` }]
+                    }],
+                    generationConfig: {
+                        responseModalities: ["AUDIO"],
+                        speechConfig: {
+                            voiceConfig: {
+                                prebuiltVoiceConfig: { voiceName: "Zephyr" }
+                            }
+                        }
+                    }
+                };
+
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-tts:generateContent?key=${apiKey}`;
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) throw new Error("TTS API 응답 실패");
+
+                const result = await response.json();
+                const part = result?.candidates?.[0]?.content?.parts?.[0];
+                const audioData = part?.inlineData?.data;
+                const mimeType = part?.inlineData?.mimeType;
+
+                if (audioData && mimeType && mimeType.startsWith("audio/")) {
+                    const sampleRate = parseInt(mimeType.match(/rate=(\d+)/)?.[1] || "24000", 10);
+                    const pcmData = base64ToArrayBuffer(audioData);
+                    const pcm16 = new Int16Array(pcmData);
+                    const wavBlob = pcmToWav(pcm16, sampleRate);
+                    const audioUrl = URL.createObjectURL(wavBlob);
+                    
+                    currentAudio = new Audio(audioUrl);
+                    currentAudio.play();
+                } else {
+                    alertToast("오디오 데이터를 수집하지 못했습니다.");
+                }
+            } catch (error) {
+                console.error(error);
+                alertToast("음성 합성에 실패했습니다. API 설정을 확인해주세요.");
+            } finally {
+                showLoader(false);
+            }
         }
 
         // 룰 기반 백업용 오개념 진단 소견 작성 엔진 (Gemini 오류 시 즉각 대행)
@@ -1011,7 +1293,6 @@
             const apiKey = localStorage.getItem('GEMINI_API_KEY') || "";
 
             if (!apiKey) {
-                // API KEY가 부재한 경우 로컬 규칙 진단 엔진 발동하여 신속히 대행
                 aiDiagnosis = getFallbackDiagnosis(studentId, studentName, val1, val2, val3, val4, val5, valF, randomQuestions[currentRandomIdx].title, randomQuestions[currentRandomIdx].answer, reason, cName, cExample, cType);
             } else {
                 try {
@@ -1025,7 +1306,6 @@
             // 시트 저장 단계로 진행
             showLoader(true, "구글 시트와 동기화 중...", "데이터 연결이 진행 중입니다. 잠시만 기다려주세요.");
 
-            // 구글 Apps Script API 전송용 페이로드 생성
             const payload = {
                 timestamp: new Date().toLocaleString('ko-KR'),
                 student: { name: studentName, id: studentId },
@@ -1047,14 +1327,13 @@
                     example: cExample || "(미작성)",
                     type: cType || "(미선택)"
                 },
-                aiDiagnosis: aiDiagnosis // 분석 소견 페이로드 추가
+                aiDiagnosis: aiDiagnosis
             };
 
-            // Fetch 통신 (POST)를 통해 구글 API에 전송
             fetch(SCRIPT_URL, {
                 method: "POST",
                 headers: {
-                    "Content-Type": "text/plain" // CORS Preflight 에러 방지를 위한 텍스트 전송 설정
+                    "Content-Type": "text/plain"
                 },
                 body: JSON.stringify(payload)
             })
@@ -1105,6 +1384,10 @@
             customDataName.value = "";
             customDataExample.value = "";
             customDataType.value = "";
+            imagePreview.classList.add('hidden');
+            imagePreview.src = "";
+            currentUploadedImageBase64 = "";
+            imageUploadLabel.textContent = "여기를 터치하여 카메라 촬영 혹은 영수증 사진 업로드";
             setRandomQuestion();
         }
 
@@ -1152,12 +1435,12 @@
                 setTimeout(() => {
                     passwordModal.classList.add('hidden');
                     
-                    // 학생 화면 제거 및 교사 대시보드 온보딩
                     studentView.classList.add('hidden');
+                    learningView.classList.add('hidden');
+                    quizView.classList.add('hidden');
                     teacherView.classList.remove('hidden');
-                    btnTriggerTeacher.classList.add('hidden'); // 플로팅 제거로 미관 보정
+                    btnTriggerTeacher.classList.add('hidden'); 
                     
-                    // 구글 스프레드시트 기록 로드 실행
                     fetchGoogleSheetLogs();
                 }, 150);
             } else {
@@ -1241,7 +1524,6 @@
                 const mappedCorrectAns = answerKey[log.randQ] || "";
                 const isCorrectF = log.randA === mappedCorrectAns;
 
-                // AI 진단 소견 바인딩 처리 (이미 스프레드시트에 영구 보존된 소견을 읽기 때문에 속도 저하 전혀 없음)
                 const aiCellContent = log.aiDiagnosis 
                     ? `<p class="text-left font-medium text-slate-700 leading-relaxed p-2.5 bg-indigo-50/40 rounded-xl border border-indigo-100/30">${log.aiDiagnosis}</p>`
                     : `<span class="text-slate-400">진단 데이터 없음</span>`;
@@ -1270,7 +1552,7 @@
             });
         }
 
-        // BOM 구조를 적용한 대시보드 엑셀(CSV) 로컬 저장 기능 (AI 소견 포함 - 데이터 빈칸 오류 완벽 해결)
+        // BOM 구조 적용 대시보드 엑셀(CSV) 로컬 저장
         btnExcelDownload.addEventListener('click', () => {
             if (fetchedLogs.length === 0) {
                 alertToast("다운로드할 연구 기록 데이터가 존재하지 않습니다! 📭");
@@ -1285,7 +1567,7 @@
                 "AI 학습 소견 (오개념 진단)"
             ];
 
-            let csvContent = "\ufeff"; // 한글 안깨지도록 BOM 헤더 강제 적용
+            let csvContent = "\ufeff"; 
             csvContent += headers.map(h => `"${h.replace(/"/g, '""')}"`).join(",") + "\r\n";
 
             fetchedLogs.forEach(log => {
@@ -1309,7 +1591,6 @@
                     log.aiDiagnosis || "진단 미수행"
                 ];
                 
-                // 각 칼럼 요소를 엑셀 호환 문자열로 안전하고 예외 없이 치환 처리
                 csvContent += row.map(val => {
                     const safeVal = (val !== null && val !== undefined) ? val.toString() : "";
                     return `"${safeVal.replace(/"/g, '""')}"`;
@@ -1332,9 +1613,9 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            URL.revokeObjectURL(url); // 메모리 해제
+            URL.revokeObjectURL(url); 
             
-            alertToast("엑셀 파일(오개념 소견 포함)이 컴퓨터에 안전하게 다운로드되었습니다! 💾");
+            alertToast("엑셀 파일이 다운로드되었습니다! 💾");
         });
 
         // 비우기 트리거 모달 노출
@@ -1383,9 +1664,9 @@
                     if (response && response.success) {
                         fetchedLogs = [];
                         renderDashboardTable(fetchedLogs);
-                        alertToast("구글 스프레드시트의 누적 데이터가 깨끗이 세척되었습니다. 🧹");
+                        alertToast("구글 스프레드시트의 누적 데이터가 초기화되었습니다. 🧹");
                     } else {
-                        alertToast("비우기 처리 중 오류: " + (response.error || "권한 거부"));
+                        alertToast("초기화 처리 중 오류: " + (response.error || "권한 거부"));
                     }
                 })
                 .catch((err) => {
@@ -1395,29 +1676,50 @@
             }, 150);
         });
 
-        // 뒤로가기 핸들러 (선생님 대시보드 종료 및 학생 화면 복원)
         btnBackToStudent.addEventListener('click', () => {
             teacherView.classList.add('hidden');
             studentView.classList.remove('hidden');
-            btnTriggerTeacher.classList.remove('hidden'); // 플로팅 전용 다시 활성화
-            alertToast("학생 제출용 메인 화면으로 복귀했습니다.");
+            btnTriggerTeacher.classList.remove('hidden'); 
+            alertToast("학생 메인 화면으로 복귀했습니다.");
         });
 
-        // Gemini API 호출 헬퍼 함수
-        async function callGemini(systemPrompt, userQuery) {
+        // Gemini API 호출 공통 모듈 (gemini-3-flash-preview 채택)
+        async function callGemini(systemPrompt, userQuery, mimeType = "text/plain", responseSchema = null, imageBase64 = null) {
             const apiKey = localStorage.getItem('GEMINI_API_KEY') || ""; 
             if (!apiKey) {
                 throw new Error("API key is empty");
             }
-            // 2026년 표준 고성능 모델인 gemini-2.5-flash 지원
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
             
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+            
+            // 이미지 분석 파트 지원 (Multimodal)
+            const parts = [];
+            if (imageBase64) {
+                parts.push({
+                    inlineData: {
+                        mimeType: "image/png",
+                        data: imageBase64
+                    }
+                });
+            }
+            parts.push({ text: userQuery });
+
             const payload = {
-                contents: [{ parts: [{ text: userQuery }] }],
+                contents: [{ parts: parts }],
                 systemInstruction: {
                     parts: [{ text: systemPrompt }]
                 }
             };
+
+            // 구조화된 JSON 데이터 출력 설정 추가
+            if (mimeType === "application/json") {
+                payload.generationConfig = {
+                    responseMimeType: "application/json"
+                };
+                if (responseSchema) {
+                    payload.generationConfig.responseSchema = responseSchema;
+                }
+            }
 
             let retries = 3;
             let delay = 1000;
@@ -1444,7 +1746,7 @@
                     retries--;
                     if (retries === 0) throw error;
                     await new Promise(resolve => setTimeout(resolve, delay));
-                    delay *= 2; // Exponential backoff
+                    delay *= 2; 
                 }
             }
         }
@@ -1452,15 +1754,18 @@
         const btnAiFeedbackF = document.getElementById('btn-ai-feedback-f');
         const aiFeedbackBoxF = document.getElementById('ai-feedback-box-f');
         const aiFeedbackTextF = document.getElementById('ai-feedback-text-f');
+        const btnPlayTtsFeedback = document.getElementById('btn-play-tts-feedback');
 
         const btnAiCustomAnalyze = document.getElementById('btn-ai-custom-analyze');
         const aiCustomBox = document.getElementById('ai-custom-box');
         const aiCustomText = document.getElementById('ai-custom-text');
+        const btnPlayTtsCustom = document.getElementById('btn-play-tts-custom');
 
         const aiChatInput = document.getElementById('ai-chat-input');
         const btnAiChatSend = document.getElementById('btn-ai-chat-send');
         const aiChatResponseBox = document.getElementById('ai-chat-response-box');
         const aiChatResponseText = document.getElementById('ai-chat-response-text');
+        const btnPlayTtsChat = document.getElementById('btn-play-tts-chat');
 
         // 활동 3: AI 피드백 매칭 평가
         btnAiFeedbackF.addEventListener('click', async () => {
@@ -1479,7 +1784,6 @@
                 return;
             }
 
-            // 버튼 로딩 상태 적용
             btnAiFeedbackF.disabled = true;
             btnAiFeedbackF.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> AI 튜터 채점 중...`;
             aiFeedbackBoxF.classList.remove('hidden');
@@ -1488,7 +1792,6 @@
             const apiKey = localStorage.getItem('GEMINI_API_KEY') || "";
 
             if (!apiKey) {
-                // API 키 미제출시 로컬 엔진을 활용하여 즉시 피드백
                 setTimeout(() => {
                     let fallbackText = `📢 [AI 안내] ${isCorrect ? '정답입니다! 🎉' : '아쉽게도 오답이에요. 😥'} \n\n제시된 데이터 "${currentQuestion}"의 정답 그릇은 [${randomQuestions[currentRandomIdx].answer}] 입니다. 작성해준 이유 "${writtenReason}"의 의도를 파악해보면 프로그래밍 학습에 큰 성장을 보이고 있음을 뜻합니다. 실생활 데이터를 가두는 최적의 규칙에 대해 다시금 깊게 복습해봐요! 👍`;
                     aiFeedbackTextF.textContent = fallbackText;
@@ -1513,62 +1816,87 @@
             }
         });
 
-        // 활동 4: 자율 창의 데이터 AI 설계 분석
+        // 활동 3 AI 피드백 오디오 읽기 연동
+        btnPlayTtsFeedback.addEventListener('click', () => {
+            const rawText = aiFeedbackTextF.textContent;
+            if (rawText && rawText !== "기다리는 중...") {
+                playVoice(rawText);
+            } else {
+                alertToast("피드백이 생성된 후 음성 기능을 시도해주세요!");
+            }
+        });
+
+        // 활동 4: 자율 설계 및 업로드 이미지 분석 기능
         btnAiCustomAnalyze.addEventListener('click', async () => {
             const name = customDataName.value.trim();
             const example = customDataExample.value.trim();
             const type = customDataType.value;
 
-            if (!name) {
-                alertToast("직접 정의한 실생활 데이터 이름을 먼저 입력해 주세요! 📦");
-                customDataName.focus();
-                return;
-            }
-            if (!example) {
-                alertToast("데이터의 예시 값을 적어주세요! ✍️");
-                customDataExample.focus();
-                return;
-            }
-            if (!type) {
-                alertToast("대입하고 싶은 자료형을 선택해 주세요! 🐍");
-                customDataType.focus();
+            // 이미지가 있다면 멀티모달 분석으로 우선 유도
+            const hasImage = currentUploadedImageBase64 !== "";
+
+            if (!hasImage && !name) {
+                alertToast("스마트 가전이나 영수증 등의 '실물 사진'을 업로드하거나, '직접 텍스트로 데이터 정의'를 진행해주세요! 📸");
                 return;
             }
 
-            // 버튼 로딩 상태 적용
             btnAiCustomAnalyze.disabled = true;
             btnAiCustomAnalyze.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> 설계 분석 중...`;
             aiCustomBox.classList.remove('hidden');
-            aiCustomText.innerHTML = `<span class="text-slate-400">💡 AI 코치가 학생의 창의 데이터를 분석 중입니다. 신선한 설계인지 확인해볼게요!</span>`;
+            aiCustomText.innerHTML = `<span class="text-slate-400">💡 AI 코치가 학습 데이터를 분석 중입니다. 잠시만 기다려주세요!</span>`;
 
             const apiKey = localStorage.getItem('GEMINI_API_KEY') || "";
 
             if (!apiKey) {
                 setTimeout(() => {
-                    let fallbackText = `💡 [AI 코치 피드백] 학생이 직접 설계한 "${name}"(예시값: ${example})에 파이썬 [${type}] 자료형을 매칭한 시도는 매우 창의적이고 타당합니다! 👏 실생활 속에서 변환 가능한 데이터의 특징을 꿰뚫고 있는 모습이 돋보입니다. 앞으로도 나만의 데이터 수집 프로젝트를 적극 진행해보세요! 🚀`;
+                    let fallbackText = "";
+                    if (hasImage) {
+                        fallbackText = `💡 [AI 코치 피드백] 업로드해 주신 실생활 사진을 감지했습니다. API 키 미등록 상태여도 사진을 파이썬 변수로 설계하는 시도 자체가 훌륭합니다. 이미지 연산 활성화를 위해 우측 하단에서 API 키를 세팅해보세요!`;
+                    } else {
+                        fallbackText = `💡 [AI 코치 피드백] 학생이 직접 설계한 "${name}"(예시값: ${example})에 파이썬 [${type}] 자료형을 매칭한 시도는 매우 창의적이고 타당합니다! 👏 실생활 속에서 변환 가능한 데이터의 특징을 잘 이해하고 있습니다.`;
+                    }
                     aiCustomText.textContent = fallbackText;
                     btnAiCustomAnalyze.disabled = false;
-                    btnAiCustomAnalyze.innerHTML = `<i class="fa-solid fa-brain"></i> <span>내가 설계한 데이터 AI에게 검토 받기</span>`;
+                    btnAiCustomAnalyze.innerHTML = `<i class="fa-solid fa-brain"></i> <span>내가 설계한 방식 / 업로드 사진 AI에게 검토 받기</span>`;
                 }, 800);
                 return;
             }
 
-            const systemPrompt = "너는 파이썬 데이터 설계 전문가이자 격려를 아끼지 않는 친절한 정보교과 AI 코치야. 학생이 주도적으로 정의한 '데이터 이름', '예시 값', 그리고 '자료형'을 분석해서, 이 자료형 선택이 타당한지(예: 전화번호를 문자열로 한 게 현명한지 등) 평가해줘. 그리고 학생의 창의적인 시도를 엄청 칭찬해주며, 3줄 내외로 조언과 격려를 따뜻하게 전해줘. 이모티콘을 듬뿍 사용해야 해.";
-            const userQuery = `설계한 데이터 이름: "${name}"\n입력할 예시 값: "${example}"\n매칭한 자료형: "${type}"\n이 데이터 설계 구조가 최적인지 평가해줘!`;
+            let systemPrompt = "";
+            let userQuery = "";
+
+            if (hasImage) {
+                // 이미지 분석 전용 멀티모달 프롬프트 구성
+                systemPrompt = "너는 디지털 세상을 파이썬 변수로 변환하는 신기한 '파이썬 머신러닝 변수 추출기'이자 다정한 코치야. 업로드된 영수증, 스마트워치, 대시보드 등의 이미지를 확인하고, 그 속에서 변수로 삼을 수 있는 핵심 데이터 3개 이상을 추출하여 친절하게 설명해줘. 예: 1. 걸음수(steps) = 10325 (int형), 2. 칼로리(calories) = 340.5 (float형). 마지막에 학생의 도전정신을 최고로 격려해줘. 4줄 내외로 짧고 알차게 이모티콘을 많이 넣어 작성해줘.";
+                userQuery = "이 사진에서 파이썬 코딩에 쓸 수 있는 데이터를 찾고 그에 알맞은 가상의 변수명과 자료형을 연결해서 가르쳐줘!";
+            } else {
+                systemPrompt = "너는 파이썬 데이터 설계 전문가이자 격려를 아끼지 않는 친절한 정보교과 AI 코치야. 학생이 주도적으로 정의한 '데이터 이름', '예시 값', 그리고 '자료형'을 분석해서, 이 자료형 선택이 타당한지(예: 전화번호를 문자열로 한 게 현명한지 등) 평가해줘. 그리고 학생의 창의적인 시도를 엄청 칭찬해주며, 3줄 내외로 조언과 격려를 따뜻하게 전해줘. 이모티콘을 듬뿍 사용해야 해.";
+                userQuery = `설계한 데이터 이름: "${name}"\n입력할 예시 값: "${example}"\n매칭한 자료형: "${type}"\n이 데이터 설계 구조가 최적인지 평가해줘!`;
+            }
 
             try {
-                const aiResponse = await callGemini(systemPrompt, userQuery);
+                const aiResponse = await callGemini(systemPrompt, userQuery, "text/plain", null, currentUploadedImageBase64 || null);
                 aiCustomText.textContent = aiResponse;
             } catch (error) {
                 console.error("Gemini API Error (Analyze):", error);
-                aiCustomText.innerHTML = `<span class="text-rose-500 font-bold"><i class="fa-solid fa-triangle-exclamation"></i> AI 분석 서버와 통신할 수 없습니다.</span>`;
+                aiCustomText.innerHTML = `<span class="text-rose-500 font-bold"><i class="fa-solid fa-triangle-exclamation"></i> AI 분석 서버와 통신할 수 없습니다. (API Key 만료 또는 파일 규격 문제)</span>`;
             } finally {
                 btnAiCustomAnalyze.disabled = false;
-                btnAiCustomAnalyze.innerHTML = `<i class="fa-solid fa-brain"></i> <span>내가 설계한 데이터 AI에게 검토 받기</span>`;
+                btnAiCustomAnalyze.innerHTML = `<i class="fa-solid fa-brain"></i> <span>내가 설계한 방식 / 업로드 사진 AI에게 검토 받기</span>`;
             }
         });
 
-        // 학습 뷰: AI 실시간 파이썬 챗봇 대화
+        // 활동 4 AI 설명 듣기 연동
+        btnPlayTtsCustom.addEventListener('click', () => {
+            const rawText = aiCustomText.textContent;
+            if (rawText && rawText !== "분석 중...") {
+                playVoice(rawText);
+            } else {
+                alertToast("분석 결과가 도출된 후 음성 합성을 실행해주세요!");
+            }
+        });
+
+        // AI 실시간 챗봇 전송 제어
         async function handleChat() {
             const query = aiChatInput.value.trim();
             if (!query) {
@@ -1578,13 +1906,13 @@
 
             aiChatInput.value = "";
             aiChatResponseBox.classList.remove('hidden');
-            aiChatResponseText.innerHTML = `<span class="text-slate-400 animate-pulse"><i class="fa-solid fa-circle-notch animate-spin"></i> AI 튜터가 생각하는 중... 답변을 금방 완성할게요!</span>`;
+            aiChatResponseText.innerHTML = `<span class="text-slate-400 animate-pulse"><i class="fa-solid fa-circle-notch animate-spin"></i> AI 튜터가 생각하는 중... 답변을 완성할게요!</span>`;
 
             const apiKey = localStorage.getItem('GEMINI_API_KEY') || "";
 
             if (!apiKey) {
                 setTimeout(() => {
-                    let fallbackText = `💬 [AI 챗봇 안내] 현재 파이썬 자료형(str, int, float, bool, list, dict)에 관한 질문을 수신했습니다. 현재 AI 실시간 API 키가 설정되지 않아 규칙 요약본으로 답변드립니다. \n\n질문하신 요지는 변수의 그릇을 정하는 방법에 관한 것입니다. 문자(str)는 따옴표를, 실수(float)는 소수점을, 리스트(list)는 대괄호를 사용한다는 핵심 특징만 기억하면 파이썬 정복이 훨씬 쉬워집니다! 🐍`;
+                    let fallbackText = `💬 [AI 챗봇 안내] 현재 파이썬 자료형에 관한 질문 "${query}"를 수신했습니다. \n\n질문하신 요지는 변수의 그릇을 정하는 방법에 관한 것입니다. 문자(str)는 따옴표를, 실수(float)는 소수점을, 리스트(list)는 대괄호를 사용한다는 핵심 특징만 기억하면 파이썬 정복이 훨씬 쉬워집니다! 🐍`;
                     aiChatResponseText.textContent = fallbackText;
                 }, 800);
                 return;
@@ -1605,6 +1933,145 @@
         aiChatInput.addEventListener('keyup', (e) => {
             if (e.key === 'Enter') {
                 handleChat();
+            }
+        });
+
+        // 챗봇 답변 읽기 기능 연동
+        btnPlayTtsChat.addEventListener('click', () => {
+            const rawText = aiChatResponseText.textContent;
+            if (rawText && rawText !== "...") {
+                playVoice(rawText);
+            } else {
+                alertToast("AI 튜터와 대화 질문을 나눈 뒤 실행해 주세요!");
+            }
+        });
+
+        // 활동 5: AI 맞춤 퀴즈방 - 구조화된 JSON 응답 생성
+        btnGenerateQuiz.addEventListener('click', async () => {
+            const apiKey = localStorage.getItem('GEMINI_API_KEY') || "";
+            if (!apiKey) {
+                alertToast("맞춤형 AI 퀴즈를 풀려면 선생님 전용 화면에서 Gemini API 키를 세팅해주세요! 🔑");
+                return;
+            }
+
+            btnGenerateQuiz.disabled = true;
+            btnGenerateQuiz.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> AI가 퀴즈 출제 중...`;
+            
+            // 구조화된 JSON 스키마 명시
+            const responseSchema = {
+                type: "ARRAY",
+                items: {
+                    type: "OBJECT",
+                    properties: {
+                        question: { type: "STRING", description: "파이썬 자료형과 관련한 흥미진진한 고등학교 수준의 퀴즈 질문" },
+                        options: {
+                            type: "ARRAY",
+                            items: { type: "STRING" },
+                            description: "파이썬 핵심 자료형 이름이 포함된 3개의 선택지"
+                        },
+                        answer: { type: "STRING", description: "options 배열 중 정확히 일치하는 오직 하나의 정답 스트링" },
+                        explanation: { type: "STRING", description: "고등학생이 이해하기 쉬운 이모티콘이 들어간 2줄 내외의 친근한 정답 해설" }
+                    },
+                    required: ["question", "options", "answer", "explanation"]
+                }
+            };
+
+            const systemPrompt = "너는 고등학교 정보 선생님이야. 실생활 데이터와 파이썬 6대 자료형(str, int, float, bool, list, dict)의 특징을 연계하는 개성 넘치고 재미있는 3지선다형 퀴즈 3개를 만들어서 오직 JSON 배열 포맷으로 제공해줘. 질문과 정답 해설에는 귀여운 한글 이모티콘을 듬뿍 사용해야 해.";
+            const userQuery = "파이썬 자료형의 이해도를 평가할 수 있는 독창적인 3문항의 퀴즈 셋을 제작해줘.";
+
+            try {
+                const responseText = await callGemini(systemPrompt, userQuery, "application/json", responseSchema);
+                const cleanJson = responseText.trim();
+                quizQuestions = JSON.parse(cleanJson);
+                
+                if (quizQuestions && quizQuestions.length > 0) {
+                    currentQuizIndex = 0;
+                    quizScore = 0;
+                    quizEmptyState.classList.add('hidden');
+                    quizContainer.classList.remove('hidden');
+                    loadQuizQuestion();
+                    alertToast("Gemini가 출제한 맞춤형 퀴즈 3문항이 발급되었습니다! 🎯");
+                } else {
+                    throw new Error("비정상적인 데이터 수집");
+                }
+            } catch (error) {
+                console.error("Quiz generation failed:", error);
+                alertToast("퀴즈 생성 중 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.");
+            } finally {
+                btnGenerateQuiz.disabled = false;
+                btnGenerateQuiz.innerHTML = `<i class="fa-solid fa-sparkles animate-pulse"></i> 퀴즈 출제하기`;
+            }
+        });
+
+        function loadQuizQuestion() {
+            if (!quizQuestions || quizQuestions.length === 0) return;
+
+            const q = quizQuestions[currentQuizIndex];
+            quizNumIndicator.textContent = `${currentQuizIndex + 1} / 3번 문항`;
+            quizScoreIndicator.textContent = `현재 점수: ${quizScore}점`;
+            quizQuestionTitle.textContent = q.question;
+            quizExplanationBox.classList.add('hidden');
+
+            quizOptionsContainer.innerHTML = "";
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = "quiz-option w-full p-4 bg-slate-50 border border-slate-200 hover:border-teal-400 rounded-2xl text-xs font-bold text-slate-700 text-left interactive-btn flex items-center justify-between";
+                btn.innerHTML = `<span>${idx + 1}. ${opt}</span> <i class="fa-solid fa-circle-question text-slate-300"></i>`;
+                btn.addEventListener('click', () => handleQuizAnswer(opt, btn));
+                quizOptionsContainer.appendChild(btn);
+            });
+        }
+
+        function handleQuizAnswer(selectedOpt, selectedBtn) {
+            const q = quizQuestions[currentQuizIndex];
+            const isCorrect = selectedOpt === q.answer;
+
+            // 중복 클릭 비활성
+            const allOptions = quizOptionsContainer.querySelectorAll('button');
+            allOptions.forEach(btn => btn.disabled = true);
+
+            if (isCorrect) {
+                quizScore += 10;
+                selectedBtn.className = "w-full p-4 bg-emerald-50 border-2 border-emerald-500 rounded-2xl text-xs font-black text-emerald-800 text-left flex items-center justify-between";
+                selectedBtn.querySelector('i').className = "fa-solid fa-circle-check text-emerald-500 text-lg";
+                
+                quizResultHeading.innerHTML = `<span class="text-emerald-600"><i class="fa-solid fa-face-smile-wink"></i> 정답입니다! (+10점)</span>`;
+            } else {
+                selectedBtn.className = "w-full p-4 bg-rose-50 border-2 border-rose-500 rounded-2xl text-xs font-black text-rose-800 text-left flex items-center justify-between";
+                selectedBtn.querySelector('i').className = "fa-solid fa-circle-xmark text-rose-500 text-lg";
+                
+                quizResultHeading.innerHTML = `<span class="text-rose-600"><i class="fa-solid fa-face-sad-tear"></i> 오답입니다! (정답: ${q.answer})</span>`;
+            }
+
+            quizExplanationText.textContent = q.explanation;
+            quizExplanationBox.classList.remove('hidden');
+            quizScoreIndicator.textContent = `현재 점수: ${quizScore}점`;
+
+            if (currentQuizIndex === 2) {
+                btnNextQuiz.innerHTML = `퀴즈 끝내기 <i class="fa-solid fa-circle-check ml-1"></i>`;
+            } else {
+                btnNextQuiz.innerHTML = `다음 문제 넘어가기 <i class="fa-solid fa-chevron-right ml-1"></i>`;
+            }
+        }
+
+        btnNextQuiz.addEventListener('click', () => {
+            if (currentQuizIndex < 2) {
+                currentQuizIndex++;
+                loadQuizQuestion();
+            } else {
+                // 퀴즈 결과 정산 피드백
+                alertToast(`축하합니다! AI 퀴즈를 모두 완료했습니다. 최종 점수: ${quizScore}점 🥳`);
+                quizContainer.classList.add('hidden');
+                quizEmptyState.classList.remove('hidden');
+                quizQuestions = [];
+            }
+        });
+
+        // 퀴즈 해설 TTS 음성 읽기 연동
+        document.getElementById('btn-play-tts-quiz').addEventListener('click', () => {
+            const q = quizQuestions[currentQuizIndex];
+            if (q) {
+                playVoice(`정답은 ${q.answer}입니다. 해설해드릴게요. ${q.explanation}`);
             }
         });
     </script>
