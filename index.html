@@ -61,6 +61,14 @@
             </div>
         </header>
 
+        <!-- 개념 요점 정리 학습 페이지 연결 버튼 -->
+        <div class="w-full">
+            <button type="button" id="btn-go-study" class="interactive-btn w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-extrabold text-sm py-4 rounded-full shadow-md shadow-amber-100 flex items-center justify-center gap-2">
+                <i class="fa-solid fa-book-open animate-bounce"></i> 
+                <span>💡 파이썬 6대 핵심 자료형 먼저 공부하기</span>
+            </button>
+        </div>
+
         <!-- 활동 1: 학습자 정보 등록 -->
         <section class="w-full bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col gap-5">
             <div class="flex items-center gap-3 border-b border-slate-50 pb-4">
@@ -261,6 +269,20 @@
                           class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-xs transition duration-150 placeholder-slate-400 resize-none leading-relaxed font-medium"
                           placeholder="예: 소수점을 표현해야 하는 미세먼지 측정치는 정밀한 계산이 필요하므로 정수(int)가 아닌 실수형(float)이 최적입니다."></textarea>
             </div>
+
+            <!-- AI 피드백 버튼 및 결과 표시창 -->
+            <div class="w-full mt-1">
+                <button type="button" id="btn-ai-feedback-f" class="interactive-btn w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-extrabold text-xs py-4 rounded-full shadow-md flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles animate-pulse"></i>
+                    <span>AI 튜터에게 내 답변 피드백 받기</span>
+                </button>
+                <div id="ai-feedback-box-f" class="hidden mt-3 p-4 bg-purple-50/60 rounded-2xl border border-purple-100 text-xs text-slate-700 leading-relaxed transition-all duration-300">
+                    <div class="flex items-center gap-1.5 font-extrabold text-purple-700 mb-1.5">
+                        <i class="fa-solid fa-robot"></i> AI 튜터의 실시간 코칭
+                    </div>
+                    <p id="ai-feedback-text-f" class="font-medium whitespace-pre-line text-slate-600">기다리는 중...</p>
+                </div>
+            </div>
         </section>
 
         <!-- 활동 4: 자율 창의 데이터 설계 -->
@@ -308,6 +330,20 @@
                     </div>
                 </div>
             </div>
+
+            <!-- 내가 설계한 데이터 AI 분석 버튼 및 결과창 -->
+            <div class="w-full mt-1">
+                <button type="button" id="btn-ai-custom-analyze" class="interactive-btn w-full bg-gradient-to-r from-teal-500 to-emerald-600 hover:from-teal-600 hover:to-emerald-700 text-white font-extrabold text-xs py-4 rounded-full shadow-md flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-brain"></i>
+                    <span>내가 설계한 데이터 AI에게 검토 받기</span>
+                </button>
+                <div id="ai-custom-box" class="hidden mt-3 p-4 bg-teal-50/60 rounded-2xl border border-teal-100 text-xs text-slate-700 leading-relaxed transition-all duration-300">
+                    <div class="flex items-center gap-1.5 font-extrabold text-teal-700 mb-1.5">
+                        <i class="fa-solid fa-graduation-cap"></i> AI 코치의 친절한 한마디
+                    </div>
+                    <p id="ai-custom-text" class="font-medium whitespace-pre-line text-slate-600">분석 중...</p>
+                </div>
+            </div>
         </section>
 
         <!-- 선생님에게 배달하기 버튼 -->
@@ -320,6 +356,179 @@
             <p class="text-center text-[11px] text-slate-400 mt-3 font-medium">
                 <i class="fa-solid fa-circle-check text-emerald-500"></i> 전송 완료 시 실시간 학습 연구 기록 보관함에 즉시 축적됩니다.
             </p>
+        </div>
+    </div>
+
+
+    <!-- 활동 외: 파이썬 핵심 자료형 학습 안내 페이지 (초기 숨김) -->
+    <div id="learning-view" class="w-full max-w-2xl px-4 flex flex-col items-center gap-5 flex-1 mt-4 hidden">
+        <header class="w-full">
+            <div class="bg-gradient-to-tr from-amber-500 to-orange-500 rounded-3xl p-6 shadow-lg text-white relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full blur-xl -translate-x-4 -translate-y-4"></div>
+                <div class="absolute bottom-0 left-0 w-32 h-32 bg-orange-400/20 rounded-full blur-2xl translate-x-4 translate-y-4"></div>
+                
+                <div class="relative z-10 flex flex-col items-center text-center">
+                    <span class="bg-white/20 text-white text-[10px] md:text-xs font-black px-4 py-1.5 rounded-full uppercase tracking-widest mb-3 backdrop-blur-md">
+                        📘 CONCEPT STUDY
+                    </span>
+                    <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight mb-2 drop-shadow-sm">파이썬 핵심 자료형 정리</h1>
+                    <p class="text-xs md:text-sm text-amber-50 font-medium">
+                        어렵게 느껴지던 변수와 데이터의 성격을 1분 만에 이해해 보아요!
+                    </p>
+                </div>
+            </div>
+        </header>
+
+        <!-- 상세 개념 학습 연구판 -->
+        <section class="w-full bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col gap-5">
+            <div class="flex items-center gap-3 border-b border-slate-50 pb-4">
+                <span class="w-8 h-8 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center font-black text-sm">
+                    <i class="fa-solid fa-lightbulb"></i>
+                </span>
+                <div>
+                    <h2 class="text-base font-bold text-slate-800">파이썬의 주요 데이터 타입</h2>
+                    <p class="text-xs text-slate-400">우리가 수집하는 정보의 종류에 따라 최적의 그릇을 준비해야 합니다.</p>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                <!-- str -->
+                <div class="p-5 bg-indigo-50/20 rounded-2xl border border-indigo-100/50 flex flex-col gap-2.5">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-black text-indigo-700 bg-indigo-100 px-3 py-1 rounded-full uppercase tracking-wider font-mono">str</span>
+                        <h3 class="font-extrabold text-slate-800 text-sm">문자열 (String)</h3>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed font-medium">
+                        키보드로 치는 모든 일반적인 문자 데이터입니다. 파이썬에서는 따옴표(<code class="text-indigo-700 bg-indigo-100/50 px-1 rounded font-mono">' '</code> 또는 <code class="text-indigo-700 bg-indigo-100/50 px-1 rounded font-mono">" "</code>)로 감싸서 문자임을 명시합니다.
+                    </p>
+                    <div class="bg-white/80 p-3 rounded-xl border border-indigo-100/30 text-xs text-slate-700 leading-snug">
+                        <span class="text-[10px] text-indigo-600 font-extrabold block mb-1">💡 주로 사용되는 데이터 예시</span>
+                        <div class="font-mono bg-slate-900 text-slate-100 p-2 rounded-lg text-[11px] overflow-x-auto">
+                            name = "홍길동"<br>
+                            phone = "010-1234-5678"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- int -->
+                <div class="p-5 bg-purple-50/20 rounded-2xl border border-purple-100/50 flex flex-col gap-2.5">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-black text-purple-700 bg-purple-100 px-3 py-1 rounded-full uppercase tracking-wider font-mono">int</span>
+                        <h3 class="font-extrabold text-slate-800 text-sm">정수 (Integer)</h3>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed font-medium">
+                        소수점이 전혀 포함되지 않은 깔끔하게 맞아떨어지는 숫자형 데이터입니다. 양수, 음수, 0을 모두 표현할 수 있습니다.
+                    </p>
+                    <div class="bg-white/80 p-3 rounded-xl border border-purple-100/30 text-xs text-slate-700 leading-snug">
+                        <span class="text-[10px] text-purple-600 font-extrabold block mb-1">💡 주로 사용되는 데이터 예시</span>
+                        <div class="font-mono bg-slate-900 text-slate-100 p-2 rounded-lg text-[11px] overflow-x-auto">
+                            students_count = 28<br>
+                            attendance_no = 15
+                        </div>
+                    </div>
+                </div>
+
+                <!-- float -->
+                <div class="p-5 bg-pink-50/20 rounded-2xl border border-pink-100/50 flex flex-col gap-2.5">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-black text-pink-700 bg-pink-100 px-3 py-1 rounded-full uppercase tracking-wider font-mono">float</span>
+                        <h3 class="font-extrabold text-slate-800 text-sm">실수 (Floating-point)</h3>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed font-medium">
+                        소수점을 포함하고 있는 정밀한 소수 데이터입니다. 수학적 연산 및 정확한 상태 값을 나타낼 때 최적입니다.
+                    </p>
+                    <div class="bg-white/80 p-3 rounded-xl border border-pink-100/30 text-xs text-slate-700 leading-snug">
+                        <span class="text-[10px] text-pink-600 font-extrabold block mb-1">💡 주로 사용되는 데이터 예시</span>
+                        <div class="font-mono bg-slate-900 text-slate-100 p-2 rounded-lg text-[11px] overflow-x-auto">
+                            vision_left = 1.2<br>
+                            fine_dust = 35.8
+                        </div>
+                    </div>
+                </div>
+
+                <!-- bool -->
+                <div class="p-5 bg-emerald-50/20 rounded-2xl border border-emerald-100/50 flex flex-col gap-2.5">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-black text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full uppercase tracking-wider font-mono">bool</span>
+                        <h3 class="font-extrabold text-slate-800 text-sm">참/거짓 (Boolean)</h3>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed font-medium">
+                        세상의 모든 상황을 오직 참(<code class="font-bold text-emerald-700 font-mono">True</code>) 또는 거짓(<code class="font-bold text-emerald-700 font-mono">False</code>)으로만 엄격하게 매핑하여 구분 짓는 가장 단순하면서 강력한 자료형입니다.
+                    </p>
+                    <div class="bg-white/80 p-3 rounded-xl border border-emerald-100/30 text-xs text-slate-700 leading-snug">
+                        <span class="text-[10px] text-emerald-600 font-extrabold block mb-1">💡 주로 사용되는 데이터 예시</span>
+                        <div class="font-mono bg-slate-900 text-slate-100 p-2 rounded-lg text-[11px] overflow-x-auto">
+                            is_submitted = True<br>
+                            is_checked = False
+                        </div>
+                    </div>
+                </div>
+
+                <!-- list -->
+                <div class="p-5 bg-amber-50/20 rounded-2xl border border-amber-100/50 flex flex-col gap-2.5">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-black text-amber-700 bg-amber-100 px-3 py-1 rounded-full uppercase tracking-wider font-mono">list</span>
+                        <h3 class="font-extrabold text-slate-800 text-sm">리스트 (List)</h3>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed font-medium">
+                        대괄호(<code class="font-bold text-amber-700 font-mono">[ ]</code>) 안에 여러 개의 데이터를 쉼표로 연결하여 한 번에 가두어 관리하는 순서형 상자 데이터입니다.
+                    </p>
+                    <div class="bg-white/80 p-3 rounded-xl border border-amber-100/30 text-xs text-slate-700 leading-snug">
+                        <span class="text-[10px] text-amber-600 font-extrabold block mb-1">💡 주로 사용되는 데이터 예시</span>
+                        <div class="font-mono bg-slate-900 text-slate-100 p-2 rounded-lg text-[11px] overflow-x-auto">
+                            members = ["강은서", "김민기", "정은우"]<br>
+                            scores = [100, 95, 85, 70]
+                        </div>
+                    </div>
+                </div>
+
+                <!-- dict -->
+                <div class="p-5 bg-teal-50/20 rounded-2xl border border-teal-100/50 flex flex-col gap-2.5">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-black text-teal-700 bg-teal-100 px-3 py-1 rounded-full uppercase tracking-wider font-mono">dict</span>
+                        <h3 class="font-extrabold text-slate-800 text-sm">딕셔너리 (Dictionary)</h3>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-relaxed font-medium">
+                        중괄호(<code class="font-bold text-teal-700 font-mono">{ }</code>) 안에 사전처럼 고유 열쇠인 키(<code class="font-mono">Key</code>)와 그에 해당하는 값(<code class="font-mono">Value</code>)을 한 쌍으로 묶은 매핑 데이터형입니다.
+                    </p>
+                    <div class="bg-white/80 p-3 rounded-xl border border-teal-100/30 text-xs text-slate-700 leading-snug">
+                        <span class="text-[10px] text-teal-600 font-extrabold block mb-1">💡 주로 사용되는 데이터 예시</span>
+                        <div class="font-mono bg-slate-900 text-slate-100 p-2 rounded-lg text-[11px] overflow-x-auto">
+                            user_profile = {"이름": "홍길동", "나이": 18, "학급": 1}<br>
+                            dictionary_dict = {"apple": "사과", "banana": "바나나"}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI 파이썬 튜터 실시간 챗봇 -->
+                <div class="p-5 bg-gradient-to-br from-indigo-50 via-pink-50 to-amber-50 rounded-2xl border border-indigo-100/40 flex flex-col gap-3">
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] bg-indigo-600 text-white font-black px-2.5 py-1 rounded-full uppercase tracking-widest animate-pulse font-mono">LIVE CHAT</span>
+                        <h3 class="font-extrabold text-slate-800 text-sm">🐍 파이썬 AI 튜터 챗봇</h3>
+                    </div>
+                    <p class="text-xs text-slate-600 leading-normal font-medium">
+                        "리스트와 딕셔너리의 차이점은?", "왜 학번은 정수보다 문자열이 나을까요?" 등 자료형에 관해 궁금한 점을 질문해보세요!
+                    </p>
+                    <div class="flex gap-2">
+                        <input type="text" id="ai-chat-input" class="flex-1 px-4 py-3 bg-white border border-slate-200 rounded-full text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500 font-medium" placeholder="질문을 입력하세요...">
+                        <button type="button" id="btn-ai-chat-send" class="interactive-btn bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-xs px-5 py-3 rounded-full flex items-center justify-center gap-1.5 shadow-md shrink-0">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                    <div id="ai-chat-response-box" class="hidden p-4 bg-white/90 rounded-2xl border border-indigo-100/30 text-xs text-slate-700 leading-relaxed font-medium">
+                        <p class="font-bold text-[10px] text-indigo-600 uppercase tracking-widest mb-1">AI 튜터 답변:</p>
+                        <p id="ai-chat-response-text" class="whitespace-pre-line text-slate-600">...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 되돌아가기 컴포넌트 버튼 -->
+        <div class="w-full mb-10">
+            <button type="button" id="btn-back-from-study" class="interactive-btn w-full bg-slate-900 hover:bg-slate-850 text-white font-extrabold text-base py-4 rounded-full shadow-lg flex items-center justify-center gap-2.5">
+                <i class="fa-solid fa-arrow-left"></i> 
+                <span>이전 페이지로 돌아가기</span>
+            </button>
         </div>
     </div>
 
@@ -541,6 +750,7 @@
         // 화면 뷰 전환용 DOM
         const studentView = document.getElementById('student-view');
         const teacherView = document.getElementById('teacher-view');
+        const learningView = document.getElementById('learning-view'); // 학습 설명 페이지
         
         // 입력 컨트롤 DOM
         const studentNameInput = document.getElementById('student-name');
@@ -560,6 +770,10 @@
         const randomDescEl = document.getElementById('random-data-desc');
         const btnShuffle = document.getElementById('btn-shuffle');
         const btnSubmit = document.getElementById('btn-submit');
+
+        // 학습 페이지 트리거 DOM
+        const btnGoStudy = document.getElementById('btn-go-study');
+        const btnBackFromStudy = document.getElementById('btn-back-from-study');
         
         // 모달 및 피드백 DOM
         const customModal = document.getElementById('custom-modal');
@@ -588,6 +802,19 @@
         window.onload = function() {
             setRandomQuestion();
         };
+
+        // 학습 페이지 이동 제어 및 복귀 이벤트
+        btnGoStudy.addEventListener('click', () => {
+            studentView.classList.add('hidden');
+            learningView.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        btnBackFromStudy.addEventListener('click', () => {
+            learningView.classList.add('hidden');
+            studentView.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
 
         // 구글 스크립트 처리 중임을 암시하는 글로벌 로더 제어
         function showLoader(visible) {
@@ -1039,6 +1266,172 @@
             studentView.classList.remove('hidden');
             btnTriggerTeacher.classList.remove('hidden'); // 플로팅 전용 다시 활성화
             alertToast("학생 제출용 메인 화면으로 복귀했습니다.");
+        });
+
+        // Gemini API 호출 헬퍼 함수
+        async function callGemini(systemPrompt, userQuery) {
+            const apiKey = ""; // Canvas 환경에서 자동으로 채워지는 API 키 슬롯
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+            
+            const payload = {
+                contents: [{ parts: [{ text: userQuery }] }],
+                systemInstruction: {
+                    parts: [{ text: systemPrompt }]
+                }
+            };
+
+            let retries = 3;
+            let delay = 1000;
+            
+            while (retries > 0) {
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    
+                    const result = await response.json();
+                    const text = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+                    if (text) {
+                        return text;
+                    }
+                    throw new Error("Gemini API가 빈 응답을 반환했습니다.");
+                } catch (error) {
+                    retries--;
+                    if (retries === 0) throw error;
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    delay *= 2; // Exponential backoff
+                }
+            }
+        }
+
+        // DOM Elements for AI Integration
+        const btnAiFeedbackF = document.getElementById('btn-ai-feedback-f');
+        const aiFeedbackBoxF = document.getElementById('ai-feedback-box-f');
+        const aiFeedbackTextF = document.getElementById('ai-feedback-text-f');
+
+        const btnAiCustomAnalyze = document.getElementById('btn-ai-custom-analyze');
+        const aiCustomBox = document.getElementById('ai-custom-box');
+        const aiCustomText = document.getElementById('ai-custom-text');
+
+        const aiChatInput = document.getElementById('ai-chat-input');
+        const btnAiChatSend = document.getElementById('btn-ai-chat-send');
+        const aiChatResponseBox = document.getElementById('ai-chat-response-box');
+        const aiChatResponseText = document.getElementById('ai-chat-response-text');
+
+        // 활동 3: AI 피드백 매칭 평가
+        btnAiFeedbackF.addEventListener('click', async () => {
+            const selectedVal = selectF.value;
+            const writtenReason = reasonF.value.trim();
+            const currentQuestion = randomQuestions[currentRandomIdx].title;
+
+            if (!selectedVal) {
+                alertToast("자료형을 먼저 선택해 주세요! 💡");
+                return;
+            }
+            if (!writtenReason) {
+                alertToast("자료형을 선택한 이유를 간략하게나마 입력해 주세요! 📝");
+                reasonF.focus();
+                return;
+            }
+
+            // 버튼 로딩 상태 적용
+            btnAiFeedbackF.disabled = true;
+            btnAiFeedbackF.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> AI 튜터 채점 중...`;
+            aiFeedbackBoxF.classList.remove('hidden');
+            aiFeedbackTextF.innerHTML = `<span class="text-slate-400">💡 AI 튜터가 학생의 논리를 분석하고 있습니다. 잠시만 기다려주세요...</span>`;
+
+            const systemPrompt = "너는 고등학교 정보 선생님이자 매우 유쾌하고 유능한 파이썬 AI 튜터야. 학생이 무작위 데이터 미션에 관해 본인의 선택과 이유를 제시하면, 이를 면밀히 채점하고 피드백을 전달해줘. 무조건 고등학생의 눈높이에 맞춰 따뜻하고 친근하며 위트 넘치게 피드백해야 하고, 정답 여부(O / X)를 명쾌히 알려준 뒤 프로그래밍적으로 매끄러운 해석을 더해줘. 3줄 내외로 짧고 알차게 답변해줘. 이모티콘을 많이 섞어서 친밀감을 형성해야 해.";
+            const userQuery = `미션 데이터: "${currentQuestion}"\n학생이 선택한 자료형: ${selectedVal}\n학생이 서술한 선택 이유: "${writtenReason}"\n(참고: 이 데이터의 올바른 정답 자료형은 "${randomQuestions[currentRandomIdx].answer}"입니다. 학생이 고른 자료형과 이유가 올바른지 논리적으로 확인하고, 설령 오답이더라도 친절하게 가이드해줘!)`;
+
+            try {
+                const aiResponse = await callGemini(systemPrompt, userQuery);
+                aiFeedbackTextF.textContent = aiResponse;
+            } catch (error) {
+                console.error("Gemini API Error (Feedback):", error);
+                aiFeedbackTextF.innerHTML = `<span class="text-rose-500 font-bold"><i class="fa-solid fa-triangle-exclamation"></i> AI 연결 오류가 발생했습니다. (인터넷 상태 혹은 API 제한을 확인하세요.)</span>`;
+            } finally {
+                btnAiFeedbackF.disabled = false;
+                btnAiFeedbackF.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles"></i> <span>AI 튜터에게 내 답변 피드백 받기</span>`;
+            }
+        });
+
+        // 활동 4: 자율 창의 데이터 AI 설계 분석
+        btnAiCustomAnalyze.addEventListener('click', async () => {
+            const name = customDataName.value.trim();
+            const example = customDataExample.value.trim();
+            const type = customDataType.value;
+
+            if (!name) {
+                alertToast("직접 정의한 실생활 데이터 이름을 먼저 입력해 주세요! 📦");
+                customDataName.focus();
+                return;
+            }
+            if (!example) {
+                alertToast("데이터의 예시 값을 적어주세요! ✍️");
+                customDataExample.focus();
+                return;
+            }
+            if (!type) {
+                alertToast("대입하고 싶은 자료형을 선택해 주세요! 🐍");
+                customDataType.focus();
+                return;
+            }
+
+            // 버튼 로딩 상태 적용
+            btnAiCustomAnalyze.disabled = true;
+            btnAiCustomAnalyze.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> 설계 분석 중...`;
+            aiCustomBox.classList.remove('hidden');
+            aiCustomText.innerHTML = `<span class="text-slate-400">💡 AI 코치가 학생의 창의 데이터를 분석 중입니다. 신선한 설계인지 확인해볼게요!</span>`;
+
+            const systemPrompt = "너는 파이썬 데이터 설계 전문가이자 격려를 아끼지 않는 친절한 정보교과 AI 코치야. 학생이 주도적으로 정의한 '데이터 이름', '예시 값', 그리고 '자료형'을 분석해서, 이 자료형 선택이 타당한지(예: 전화번호를 문자열로 한 게 현명한지 등) 평가해줘. 그리고 학생의 창의적인 시도를 엄청 칭찬해주며, 3줄 내외로 조언과 격려를 따뜻하게 전해줘. 이모티콘을 듬뿍 사용해야 해.";
+            const userQuery = `설계한 데이터 이름: "${name}"\n입력할 예시 값: "${example}"\n매칭한 자료형: "${type}"\n이 데이터 설계 구조가 최적인지 평가해줘!`;
+
+            try {
+                const aiResponse = await callGemini(systemPrompt, userQuery);
+                aiCustomText.textContent = aiResponse;
+            } catch (error) {
+                console.error("Gemini API Error (Analyze):", error);
+                aiCustomText.innerHTML = `<span class="text-rose-500 font-bold"><i class="fa-solid fa-triangle-exclamation"></i> AI 분석 서버와 통신할 수 없습니다.</span>`;
+            } finally {
+                btnAiCustomAnalyze.disabled = false;
+                btnAiCustomAnalyze.innerHTML = `<i class="fa-solid fa-brain"></i> <span>내가 설계한 데이터 AI에게 검토 받기</span>`;
+            }
+        });
+
+        // 학습 뷰: AI 실시간 파이썬 챗봇 대화
+        async function handleChat() {
+            const query = aiChatInput.value.trim();
+            if (!query) {
+                alertToast("AI 튜터에게 보낼 질문을 입력해 주세요! 💬");
+                return;
+            }
+
+            aiChatInput.value = "";
+            aiChatResponseBox.classList.remove('hidden');
+            aiChatResponseText.innerHTML = `<span class="text-slate-400 animate-pulse"><i class="fa-solid fa-circle-notch animate-spin"></i> AI 튜터가 생각하는 중... 답변을 금방 완성할게요!</span>`;
+
+            const systemPrompt = "너는 친절하고 설명력이 뛰어난 고등학교 파이썬 AI 튜터야. 학생들이 파이썬 기초 자료형(str, int, float, bool, list, dict)에 관한 질문을 던지면, 고등학생 눈높이에 딱 맞는 아주 쉬운 비유(상자, 사전, 가방 등)와 일상적인 실생활 예시를 사용해 명료하게 설명해줘. 4줄 이내로 답변을 깔끔하게 끊어 써주고 친근한 이모티콘을 포함해줘.";
+
+            try {
+                const aiResponse = await callGemini(systemPrompt, query);
+                aiChatResponseText.textContent = aiResponse;
+            } catch (error) {
+                console.error("Gemini API Error (Chat):", error);
+                aiChatResponseText.innerHTML = `<span class="text-rose-500 font-bold"><i class="fa-solid fa-triangle-exclamation"></i> AI 연결 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.</span>`;
+            }
+        }
+
+        btnAiChatSend.addEventListener('click', handleChat);
+        aiChatInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') {
+                handleChat();
+            }
         });
     </script>
 </body>
