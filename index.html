@@ -289,7 +289,7 @@
                 <div id="ai-feedback-box-f" class="hidden mt-3 p-4 bg-purple-50/60 rounded-2xl border border-purple-100 text-xs text-slate-700 leading-relaxed transition-all duration-300">
                     <div class="flex items-center justify-between font-extrabold text-purple-700 mb-1.5">
                         <span class="flex items-center gap-1.5"><i class="fa-solid fa-robot"></i> AI 튜터의 실시간 코칭</span>
-                        <!-- 오디오 듣기 버튼 추가 -->
+                        <!-- 오디오 듣기 버튼 -->
                         <button type="button" id="btn-play-tts-feedback" class="interactive-btn px-3 py-1 bg-purple-600 text-white rounded-full text-[10px] flex items-center gap-1">
                             <i class="fa-solid fa-volume-high"></i> 음성으로 듣기
                         </button>
@@ -393,7 +393,6 @@
         </div>
     </div>
 
-    <!-- 활동 외: 파이썬 핵심 자료형 학습 안내 페이지 (초기 숨김) -->
     <div id="learning-view" class="w-full max-w-2xl px-4 flex flex-col items-center gap-5 flex-1 mt-4 hidden">
         <header class="w-full">
             <div class="bg-gradient-to-tr from-amber-500 to-orange-500 rounded-3xl p-6 shadow-lg text-white relative overflow-hidden">
@@ -572,7 +571,7 @@
         </div>
     </div>
 
-    <!-- AI 실시간 브레인 퀴즈방 뷰 (초기 숨김) -->
+    <!-- AI 실시간 브레인 퀴즈방 뷰 -->
     <div id="quiz-view" class="w-full max-w-2xl px-4 flex flex-col items-center gap-5 flex-1 mt-4 hidden">
         <header class="w-full">
             <div class="bg-gradient-to-tr from-teal-600 via-emerald-600 to-cyan-500 rounded-3xl p-6 shadow-lg text-white relative overflow-hidden">
@@ -655,7 +654,7 @@
         </div>
     </div>
 
-    <!-- 교사용 대시보드 뷰 영역 (초기 숨김) -->
+    <!-- 교사용 대시보드 뷰 영역 -->
     <div id="teacher-view" class="w-full max-w-7xl px-4 md:px-8 flex flex-col gap-6 flex-1 hidden mt-4">
         <header class="w-full bg-slate-900 text-white p-6 rounded-3xl shadow-lg relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-4">
             <div class="flex items-center gap-4 text-center md:text-left">
@@ -701,7 +700,7 @@
             </div>
         </div>
 
-        <!-- 15가지 표 테이블 카드 영역 -->
+        <!-- 데이터 수합 현황 테이블 -->
         <section class="w-full bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col gap-4 overflow-hidden">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                 <span class="text-sm font-extrabold text-slate-700 flex items-center gap-2">
@@ -764,7 +763,7 @@
                 </div>
                 
                 <h3 class="text-lg font-black text-slate-800 mb-2">선생님 본인 인증</h3>
-                <p class="text-slate-400 text-xs mb-5 font-medium">관리자 전용 대시보드 진입을 위한 암호를 대입하세요.</p>
+                <p class="text-slate-400 text-xs mb-5 font-medium">관리자 전용 대시보드 진입을 위한 암호를 입력하세요.</p>
                 
                 <div class="mb-5">
                     <input type="password" id="teacher-password" 
@@ -1478,7 +1477,7 @@
                     alertToast("시트 수집 실패: " + rows.error);
                     return;
                 }
-                fetchedLogs = rows || [];
+                fetchedLogs = Array.isArray(rows) ? rows : [];
                 renderDashboardTable(fetchedLogs);
                 alertToast("구글 스프레드시트 수합 데이터가 실시간 갱신되었습니다. 🔄");
             })
@@ -1490,9 +1489,10 @@
 
         function renderDashboardTable(logs) {
             dashboardTableBody.innerHTML = "";
-            logCountEl.textContent = logs.length;
+            const safeLogs = Array.isArray(logs) ? logs : [];
+            logCountEl.textContent = safeLogs.length;
 
-            if (logs.length === 0) {
+            if (safeLogs.length === 0) {
                 dashboardTableBody.innerHTML = `
                     <tr>
                         <td colspan="18" class="py-16 text-center text-slate-400 font-bold">
@@ -1504,11 +1504,12 @@
                 return;
             }
 
-            logs.forEach((log, index) => {
+            safeLogs.forEach((log, index) => {
+                if (!log) return;
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-slate-50 transition border-b border-slate-100";
                 
-                const rankNum = logs.length - index;
+                const rankNum = safeLogs.length - index;
 
                 const renderBadge = (data, isCorrect) => {
                     if (!data || data === "(공란)") return `<span class="text-slate-300">공란</span>`;
@@ -1530,7 +1531,7 @@
 
                 tr.innerHTML = `
                     <td class="px-4 py-4 text-center font-bold text-slate-400">${rankNum}</td>
-                    <td class="px-4 py-4 font-medium text-slate-500 whitespace-nowrap">${log.sheetTimestamp}</td>
+                    <td class="px-4 py-4 font-medium text-slate-500 whitespace-nowrap">${log.sheetTimestamp || ""}</td>
                     <td class="px-4 py-4 font-extrabold text-indigo-600 whitespace-nowrap">${log.name1 || ""}</td>
                     <td class="px-4 py-4 text-slate-500 whitespace-nowrap">${log.clientTimestamp || ""}</td>
                     <td class="px-4 py-4 font-bold text-slate-700 whitespace-nowrap">${log.studentId || ""}</td>
@@ -1552,15 +1553,16 @@
             });
         }
 
-        // BOM 구조 적용 대시보드 엑셀(CSV) 로컬 저장
+        // BOM 구조 적용 대시보드 엑셀(CSV) 로컬 저장 (안정성 필터 포함)
         btnExcelDownload.addEventListener('click', () => {
-            if (fetchedLogs.length === 0) {
+            const safeLogs = Array.isArray(fetchedLogs) ? fetchedLogs : [];
+            if (safeLogs.length === 0) {
                 alertToast("다운로드할 연구 기록 데이터가 존재하지 않습니다! 📭");
                 return;
             }
 
             const headers = [
-                "응답 일시", "이름", "날짜와 시간", "학번", "이름", 
+                "응답 일시", "이름(Sheet)", "날짜와 시간", "학번", "이름", 
                 "1번(이름) 선택", "2번(시력) 선택", "3번(번호) 선택", "4번(설문) 선택", "5번(모둠) 선택",
                 "랜덤 데이터 이름", "랜덤 데이터 선택", "선택한 이유",
                 "창의 데이터 이름", "창의 예시 값", "창의 선택 자료형",
@@ -1570,57 +1572,75 @@
             let csvContent = "\ufeff"; 
             csvContent += headers.map(h => `"${h.replace(/"/g, '""')}"`).join(",") + "\r\n";
 
-            fetchedLogs.forEach(log => {
+            safeLogs.forEach(log => {
+                if (!log) return;
+                
+                // 줄바꿈과 이중 쌍따옴표가 CSV 격자를 깨는 현상을 근본적으로 해결하기 위한 클렌징 처리
+                const cleanCsvCell = (val) => {
+                    if (val === null || val === undefined) return "";
+                    let strVal = String(val);
+                    // 줄바꿈 공백 치환 및 쌍따옴표 엑셀 규격 치환("" 규칙)
+                    strVal = strVal.replace(/\r?\n|\r/g, " ").replace(/"/g, '""');
+                    return strVal;
+                };
+
                 const row = [
-                    log.sheetTimestamp || "",
-                    log.name1 || "",
-                    log.clientTimestamp || "",
-                    log.studentId || "",
-                    log.name2 || "",
-                    log.ans1 || "",
-                    log.ans2 || "",
-                    log.ans3 || "",
-                    log.ans4 || "",
-                    log.ans5 || "",
-                    log.randQ || "",
-                    log.randA || "",
-                    log.reason || "",
-                    log.custQ || "",
-                    log.custE || "",
-                    log.custA || "",
-                    log.aiDiagnosis || "진단 미수행"
+                    cleanCsvCell(log.sheetTimestamp),
+                    cleanCsvCell(log.name1),
+                    cleanCsvCell(log.clientTimestamp),
+                    cleanCsvCell(log.studentId),
+                    cleanCsvCell(log.name2),
+                    cleanCsvCell(log.ans1),
+                    cleanCsvCell(log.ans2),
+                    cleanCsvCell(log.ans3),
+                    cleanCsvCell(log.ans4),
+                    cleanCsvCell(log.ans5),
+                    cleanCsvCell(log.randQ),
+                    cleanCsvCell(log.randA),
+                    cleanCsvCell(log.reason),
+                    cleanCsvCell(log.custQ),
+                    cleanCsvCell(log.custE),
+                    cleanCsvCell(log.custA),
+                    cleanCsvCell(log.aiDiagnosis || "진단 미수행")
                 ];
                 
-                csvContent += row.map(val => {
-                    const safeVal = (val !== null && val !== undefined) ? val.toString() : "";
-                    return `"${safeVal.replace(/"/g, '""')}"`;
-                }).join(",") + "\r\n";
+                csvContent += row.map(val => `"${val}"`).join(",") + "\r\n";
             });
 
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const date = String(now.getDate()).padStart(2, '0');
-            const dateStr = `${year}-${month}-${date}`;
+            try {
+                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const url = URL.createObjectURL(blob);
+                const link = document.createElement("a");
+                
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const date = String(now.getDate()).padStart(2, '0');
+                const dateStr = `${year}-${month}-${date}`;
 
-            link.setAttribute("href", url);
-            link.setAttribute("download", `자료형학습_기록_${dateStr}.csv`);
-            link.style.display = 'none';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            URL.revokeObjectURL(url); 
-            
-            alertToast("엑셀 파일이 다운로드되었습니다! 💾");
+                link.setAttribute("href", url);
+                link.setAttribute("download", `자료형학습_기록_${dateStr}.csv`);
+                link.style.display = 'none';
+                document.body.appendChild(link);
+                link.click();
+                
+                // 브라우저 리소스 해제 가드
+                setTimeout(() => {
+                    document.body.removeChild(link);
+                    URL.revokeObjectURL(url);
+                }, 100);
+                
+                alertToast("엑셀 파일이 다운로드되었습니다! 💾");
+            } catch (err) {
+                console.error("Download Error: ", err);
+                alertToast("엑셀 내보내기 중 시스템 오류가 발생했습니다.");
+            }
         });
 
         // 비우기 트리거 모달 노출
         btnClearAll.addEventListener('click', () => {
-            if (fetchedLogs.length === 0) {
+            const safeLogs = Array.isArray(fetchedLogs) ? fetchedLogs : [];
+            if (safeLogs.length === 0) {
                 alertToast("삭제할 데이터가 이미 비어있습니다.");
                 return;
             }
