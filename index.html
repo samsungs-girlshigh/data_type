@@ -359,7 +359,6 @@
         </div>
     </div>
 
-
     <!-- 활동 외: 파이썬 핵심 자료형 학습 안내 페이지 (초기 숨김) -->
     <div id="learning-view" class="w-full max-w-2xl px-4 flex flex-col items-center gap-5 flex-1 mt-4 hidden">
         <header class="w-full">
@@ -532,7 +531,6 @@
         </div>
     </div>
 
-
     <!-- 교사용 대시보드 뷰 영역 (초기 숨김) -->
     <div id="teacher-view" class="w-full max-w-7xl px-4 md:px-8 flex-col gap-6 flex-1 hidden mt-4">
         <header class="w-full bg-slate-900 text-white p-6 rounded-3xl shadow-lg relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-4">
@@ -542,7 +540,7 @@
                 </div>
                 <div>
                     <h1 class="text-xl md:text-2xl font-black">실시간 학습 대시보드 📊</h1>
-                    <p class="text-xs text-slate-400">구글 스프레드시트에 연동된 학생들의 응답 내역을 실시간으로 읽고 관리합니다.</p>
+                    <p class="text-xs text-slate-400">스프레드시트에 연동된 학생들의 응답 내역 및 AI 오개념 진단을 실시간 확인합니다.</p>
                 </div>
             </div>
             
@@ -562,7 +560,7 @@
             </div>
         </header>
 
-        <!-- 14가지 표 테이블 카드 영역 -->
+        <!-- 15가지 표 테이블 카드 영역 -->
         <section class="w-full bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col gap-4 overflow-hidden">
             <div class="flex items-center justify-between border-b border-slate-100 pb-3">
                 <span class="text-sm font-extrabold text-slate-700 flex items-center gap-2">
@@ -575,12 +573,12 @@
 
             <!-- 가로 모바일 스크롤 테이블 포장 -->
             <div class="w-full overflow-x-auto rounded-2xl border border-slate-100">
-                <table class="w-full min-w-[1600px] text-left border-collapse">
+                <table class="w-full min-w-[1900px] text-left border-collapse">
                     <thead>
                         <tr class="bg-slate-50 text-slate-500 font-extrabold text-xs uppercase border-b border-slate-100">
                             <th class="px-4 py-3.5 text-center">순서</th>
                             <th class="px-4 py-3.5">응답 일시</th>
-                            <th class="px-4 py-3.5">이름</th>
+                            <th class="px-4 py-3.5">이름(Sheet)</th>
                             <th class="px-4 py-3.5">날짜와 시간</th>
                             <th class="px-4 py-3.5">학번</th>
                             <th class="px-4 py-3.5">이름</th>
@@ -595,6 +593,7 @@
                             <th class="px-4 py-3.5">창의 데이터 이름</th>
                             <th class="px-4 py-3.5">창의 예시 값</th>
                             <th class="px-4 py-3.5 text-center">창의 선택 자료형</th>
+                            <th class="px-4 py-3.5 text-center min-w-[240px] bg-indigo-50/50">AI 학습 소견 (오개념 진단)</th>
                         </tr>
                     </thead>
                     <tbody id="dashboard-table-body" class="text-xs text-slate-600 divide-y divide-slate-100">
@@ -605,7 +604,6 @@
         </section>
     </div>
 
-
     <!-- 우측 하단 플로팅 선생님 전용 단추 -->
     <div class="fixed bottom-6 right-6 z-40">
         <button type="button" id="btn-trigger-teacher" class="interactive-btn flex items-center justify-center gap-1.5 bg-slate-800 hover:bg-slate-700 active:scale-95 text-white font-extrabold text-xs px-5 py-3 rounded-full shadow-lg transition-all duration-200">
@@ -613,7 +611,6 @@
             <span>선생님 전용</span>
         </button>
     </div>
-
 
     <!-- 선생님 암호 확인 입력 모달 -->
     <div id="password-modal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-md z-50 flex items-center justify-center hidden px-4 transition-all duration-300">
@@ -628,7 +625,6 @@
                 <h3 class="text-lg font-black text-slate-800 mb-2">선생님 본인 인증</h3>
                 <p class="text-slate-400 text-xs mb-5 font-medium">관리자 전용 대시보드 진입을 위한 암호를 대입하세요.</p>
                 
-                <!-- 입력 양식 -->
                 <div class="mb-5">
                     <input type="password" id="teacher-password" 
                            class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-full text-center focus:outline-none focus:ring-2 focus:ring-indigo-500 font-extrabold tracking-widest text-lg placeholder-slate-300 transition" 
@@ -649,7 +645,6 @@
             </div>
         </div>
     </div>
-
 
     <!-- 팝업 알림 커스텀 모달 (제출 성공 등) -->
     <div id="custom-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden px-4 transition-all duration-300">
@@ -676,7 +671,6 @@
             </div>
         </div>
     </div>
-
 
     <!-- 전체 삭제 확인 모달 -->
     <div id="confirm-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden px-4 transition-all duration-300">
@@ -717,7 +711,6 @@
     <!-- 토스트 알림 컨테이너 -->
     <div id="toast-container" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 pointer-events-none w-[90%] max-w-xs"></div>
 
-
     <script>
         // 구글 웹앱 배포 주소 연동 변수 (본인의 구글 Apps Script 실행 URL을 이곳에 덮어쓰세요)
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzrsnWZRvVemAjfCmtMm4SVRSr5BlNNd-RJfPEsIYxuI9N7Vf-N20DJYTSHqFVOeNqQLQ/exec";
@@ -750,7 +743,7 @@
         // 화면 뷰 전환용 DOM
         const studentView = document.getElementById('student-view');
         const teacherView = document.getElementById('teacher-view');
-        const learningView = document.getElementById('learning-view'); // 학습 설명 페이지
+        const learningView = document.getElementById('learning-view'); 
         
         // 입력 컨트롤 DOM
         const studentNameInput = document.getElementById('student-name');
@@ -1050,7 +1043,6 @@
             }
         });
 
-
         btnRefresh.addEventListener('click', fetchGoogleSheetLogs);
 
         // GET 요청을 통한 구글 시트 내역 전체 수합 기능
@@ -1073,7 +1065,18 @@
                     alertToast("시트 수집 실패: " + rows.error);
                     return;
                 }
-                fetchedLogs = rows || [];
+                // 기존 데이터에 AI 소견 속성(aiDiagnosis)을 보존하기 위해 기존 fetchedLogs와 병합하거나 새로 대입
+                const newLogs = rows || [];
+                newLogs.forEach((newLog) => {
+                    // 구글 시트의 고유 키(학생ID + 응답시간 등)를 기준으로 기존의 aiDiagnosis가 있다면 유지
+                    const matched = fetchedLogs.find(old => old.studentId === newLog.studentId && old.sheetTimestamp === newLog.sheetTimestamp);
+                    if (matched && matched.aiDiagnosis) {
+                        newLog.aiDiagnosis = matched.aiDiagnosis;
+                    } else {
+                        newLog.aiDiagnosis = "";
+                    }
+                });
+                fetchedLogs = newLogs;
                 renderDashboardTable(fetchedLogs);
                 alertToast("구글 스프레드시트 수합 데이터가 실시간 갱신되었습니다. 🔄");
             })
@@ -1090,7 +1093,7 @@
             if (logs.length === 0) {
                 dashboardTableBody.innerHTML = `
                     <tr>
-                        <td colspan="17" class="py-16 text-center text-slate-400 font-bold">
+                        <td colspan="18" class="py-16 text-center text-slate-400 font-bold">
                             <i class="fa-solid fa-folder-open text-4xl text-slate-300 block mb-3"></i>
                             아직 배달된 자료가 없어요 📭
                         </td>
@@ -1119,6 +1122,18 @@
                 const mappedCorrectAns = answerKey[log.randQ] || "";
                 const isCorrectF = log.randA === mappedCorrectAns;
 
+                // AI 오개념 소견 셀 내용 렌더링
+                let aiCellContent = "";
+                if (log.aiDiagnosis) {
+                    aiCellContent = `<p class="text-left font-medium text-slate-700 leading-relaxed p-1 bg-indigo-50/40 rounded-xl border border-indigo-100/30">${log.aiDiagnosis}</p>`;
+                } else {
+                    aiCellContent = `
+                        <button type="button" onclick="generateStudentAiDiagnosis(${index})" id="btn-diag-${index}" class="interactive-btn px-3.5 py-2 bg-indigo-600 text-white hover:bg-indigo-700 rounded-full font-bold text-[10px] flex items-center gap-1 mx-auto shadow-sm shadow-indigo-100">
+                            <i class="fa-solid fa-brain"></i> 오개념 분석
+                        </button>
+                    `;
+                }
+
                 tr.innerHTML = `
                     <td class="px-4 py-4 text-center font-bold text-slate-400">${rankNum}</td>
                     <td class="px-4 py-4 font-medium text-slate-500 whitespace-nowrap">${log.sheetTimestamp}</td>
@@ -1136,14 +1151,87 @@
                     <td class="px-4 py-4 italic text-slate-500 min-w-[250px] max-w-sm overflow-hidden text-ellipsis">${log.reason || "(미서술)"}</td>
                     <td class="px-4 py-4 font-bold text-teal-700">${log.custQ || "(미작성)"}</td>
                     <td class="px-4 py-4 text-slate-600 font-medium">${log.custE || ""}</td>
-                    <td class="px-4 py-4 text-center"><span class="bg-slate-100 text-slate-700 font-bold px-2.5 py-1 rounded-full">${log.custA || "(미선택)"}</span></td>
+                    <td class="px-4 py-4 text-center whitespace-nowrap"><span class="bg-slate-100 text-slate-700 font-bold px-2.5 py-1 rounded-full">${log.custA || "(미선택)"}</span></td>
+                    <td class="px-4 py-4 text-center bg-indigo-50/20" id="ai-diagnosis-${index}">${aiCellContent}</td>
                 `;
                 dashboardTableBody.appendChild(tr);
             });
         }
 
+        // 교사용 대시보드 내 학생 맞춤형 AI 오개념 소견 진단 엔진
+        async function generateStudentAiDiagnosis(index) {
+            const log = fetchedLogs[index];
+            if (!log) return;
 
-        // BOM 구조를 적용한 대시보드 엑셀(CSV) 로컬 저장 기능
+            const btn = document.getElementById(`btn-diag-${index}`);
+            const cell = document.getElementById(`ai-diagnosis-${index}`);
+
+            if (btn) {
+                btn.disabled = true;
+                btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> 분석 중`;
+            }
+
+            const systemPrompt = `너는 고등학교 정보 과목 교사들의 수업 설계를 돕는 유능한 'AI 교육 진단 전문가'이자 동료 정보교사야.
+            학생의 파이썬 자료형 매칭 학습 데이터를 면밀히 분석한 후, 
+            이 학생이 보이고 있는 파이썬 개념 이해도, '특정 오개념(예: 따옴표를 쓰지 않는 문자열 혼동, 소수점 실수를 정수와 구별하지 못함, 대괄호를 쓰는 리스트와 중괄호를 쓰는 딕셔너리의 특징 혼동, 참/거짓 논리 타입의 이해 미비 등)', 그리고 '약한 지식 영역'을 진단하여 교사 관점의 정교한 관찰 소견(소견서 형태)을 작성해 줘.
+            
+            [작성 지침]
+            1. 어조: 정중하고, 전문적인 교사 관찰 소견 어조 (~하는 경향이 있음, ~에 대한 오개념을 보임, ~ 지식 보완이 필요함).
+            2. 분량: 2~3줄 내외로 핵심만 명확히 요약.
+            3. 만약 100% 완벽하게 이해하고 이유도 논리적이라면, 학생의 훌륭한 프로그래밍적 논리력을 칭찬하고 향후 추천할 심화 주제(예: '튜플이나 세트 등의 추가 자료형 탐색 권장')를 포함해줘.
+            4. 존댓말로 간결하게 작성할 것.`;
+
+            const userQuery = `
+            [학생 프로필]
+            학번: ${log.studentId}
+            이름: ${log.name2}
+
+            [활동 2: 기본 매칭 5문항 결과 (정답 여부)]
+            - 1번(학생 이름 데이터, 정답: str): 학생 선택 = ${log.ans1} (${log.ans1 === 'str' ? 'O' : 'X'})
+            - 2번(양쪽 시력 측정, 정답: float): 학생 선택 = ${log.ans2} (${log.ans2 === 'float' ? 'O' : 'X'})
+            - 3번(출석 번호, 정답: int): 학생 선택 = ${log.ans3} (${log.ans3 === 'int' ? 'O' : 'X'})
+            - 4번(설문 참여 여부, 정답: bool): 학생 선택 = ${log.ans4} (${log.ans4 === 'bool' ? 'O' : 'X'})
+            - 5번(모둠원 이름 목록, 정답: list): 학생 선택 = ${log.ans5} (${log.ans5 === 'list' ? 'O' : 'X'})
+
+            [활동 3: 랜덤 매칭 도전]
+            - 제시된 미션: ${log.randQ}
+            - 정답 자료형: ${answerKey[log.randQ] || '알수없음'}
+            - 학생이 선택한 자료형: ${log.randA} (${log.randA === (answerKey[log.randQ] || '') ? 'O' : 'X'})
+            - 학생이 서술한 선택 이유: "${log.reason}"
+
+            [활동 4: 자율 창의 데이터 설계]
+            - 정의한 데이터 이름: "${log.custQ}"
+            - 데이터 예시 값: "${log.custE}"
+            - 선택한 자료형 그릇: "${log.custA}"
+            `;
+
+            try {
+                const aiResponse = await callGemini(systemPrompt, userQuery);
+                // 학생 데이터에 소견 보존
+                log.aiDiagnosis = aiResponse;
+                
+                // UI 즉시 업데이트
+                if (cell) {
+                    cell.innerHTML = `<p class="text-left font-medium text-slate-700 leading-relaxed p-1 bg-indigo-50/40 rounded-xl border border-indigo-100/30">${aiResponse}</p>`;
+                }
+                alertToast(`${log.name2} 학생의 오개념 진단 소견이 발급되었습니다! 🔍`);
+            } catch (error) {
+                console.error("Gemini API Error (Diagnosis):", error);
+                if (cell) {
+                    cell.innerHTML = `
+                        <div class="text-center">
+                            <span class="text-rose-500 font-semibold block text-[10px] mb-1">진단 실패</span>
+                            <button type="button" onclick="generateStudentAiDiagnosis(${index})" class="interactive-btn px-2.5 py-1 bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-full font-bold text-[10px] flex items-center gap-0.5 mx-auto">
+                                <i class="fa-solid fa-rotate-right"></i> 재시도
+                            </button>
+                        </div>
+                    `;
+                }
+                alertToast("AI 진단 도중 통신 오류가 발생했습니다.");
+            }
+        }
+
+        // BOM 구조를 적용한 대시보드 엑셀(CSV) 로컬 저장 기능 (AI 소견 포함)
         btnExcelDownload.addEventListener('click', () => {
             if (fetchedLogs.length === 0) {
                 alertToast("다운로드할 연구 기록 데이터가 존재하지 않습니다! 📭");
@@ -1154,7 +1242,8 @@
                 "응답 일시", "이름", "날짜와 시간", "학번", "이름", 
                 "1번(이름) 선택", "2번(시력) 선택", "3번(번호) 선택", "4번(설문) 선택", "5번(모둠) 선택",
                 "랜덤 데이터 이름", "랜덤 데이터 선택", "선택한 이유",
-                "창의 데이터 이름", "창의 예시 값", "창의 선택 자료형"
+                "창의 데이터 이름", "창의 예시 값", "창의 선택 자료형",
+                "AI 학습 소견 (오개념 진단)"
             ];
 
             let csvContent = "\ufeff"; // 한글 안깨지도록 BOM 헤더 강제 적용
@@ -1177,7 +1266,8 @@
                     log.reason || "",
                     log.custQ || "",
                     log.custE || "",
-                    log.custA || ""
+                    log.custA || "",
+                    log.aiDiagnosis || "진단 미수행"
                 ];
                 csvContent += row.map(val => `"${val.toString().replace(/"/g, '""')}"`).join(",") + "\r\n";
             });
@@ -1199,7 +1289,7 @@
             link.click();
             document.body.removeChild(link);
             
-            alertToast("엑셀 파일이 컴퓨터에 안전하게 백업 및 다운로드되었습니다! 💾");
+            alertToast("엑셀 파일(오개념 소견 포함)이 컴퓨터에 안전하게 다운로드되었습니다! 💾");
         });
 
         // 비우기 트리거 모달 노출
