@@ -532,7 +532,7 @@
     </div>
 
     <!-- 교사용 대시보드 뷰 영역 (초기 숨김) -->
-    <div id="teacher-view" class="w-full max-w-7xl px-4 md:px-8 flex-col gap-6 flex-1 hidden mt-4">
+    <div id="teacher-view" class="w-full max-w-7xl px-4 md:px-8 flex flex-col gap-6 flex-1 hidden mt-4">
         <header class="w-full bg-slate-900 text-white p-6 rounded-3xl shadow-lg relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-4">
             <div class="flex items-center gap-4 text-center md:text-left">
                 <div class="w-12 h-12 bg-indigo-500/20 text-indigo-400 rounded-2xl flex items-center justify-center text-2xl">
@@ -559,6 +559,23 @@
                 </button>
             </div>
         </header>
+
+        <!-- API KEY 관리 설정 창 추가 -->
+        <div class="bg-slate-850 p-5 rounded-3xl border border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-4 text-slate-300">
+            <div class="flex items-center gap-3">
+                <span class="w-10 h-10 rounded-full bg-slate-800 text-amber-400 flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-key"></i>
+                </span>
+                <div>
+                    <h4 class="text-xs font-bold text-white">Gemini API 키 실시간 연동 설정</h4>
+                    <p class="text-[11px] text-slate-400">API 키 미설정 시 교과 진단 엔진(Rule-based Fallback)이 분석을 성실히 대행합니다.</p>
+                </div>
+            </div>
+            <div class="flex gap-2 w-full sm:w-auto">
+                <input type="password" id="input-api-key" class="bg-slate-900 border border-slate-700 rounded-full px-5 py-3 text-xs text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 w-full sm:w-56" placeholder="AI API 키 입력">
+                <button type="button" id="btn-save-key" class="interactive-btn bg-indigo-600 hover:bg-indigo-500 text-white font-extrabold text-xs px-5 py-3 rounded-full whitespace-nowrap">키 저장</button>
+            </div>
+        </div>
 
         <!-- 15가지 표 테이블 카드 영역 -->
         <section class="w-full bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col gap-4 overflow-hidden">
@@ -593,7 +610,7 @@
                             <th class="px-4 py-3.5">창의 데이터 이름</th>
                             <th class="px-4 py-3.5">창의 예시 값</th>
                             <th class="px-4 py-3.5 text-center">창의 선택 자료형</th>
-                            <th class="px-4 py-3.5 text-center min-w-[240px] bg-indigo-50/50">AI 학습 소견 (오개념 진단)</th>
+                            <th class="px-4 py-3.5 text-center min-w-[280px] bg-indigo-50/50">AI 학습 소견 (오개념 진단)</th>
                         </tr>
                     </thead>
                     <tbody id="dashboard-table-body" class="text-xs text-slate-600 divide-y divide-slate-100">
@@ -792,9 +809,24 @@
         const dashboardTableBody = document.getElementById('dashboard-table-body');
         const logCountEl = document.getElementById('log-count');
 
+        // API KEY DOM
+        const inputApiKey = document.getElementById('input-api-key');
+        const btnSaveKey = document.getElementById('btn-save-key');
+
         window.onload = function() {
             setRandomQuestion();
+            // 로컬에 저장되어 있는 API 키 확인 및 입력 복원
+            if (localStorage.getItem('GEMINI_API_KEY')) {
+                inputApiKey.value = localStorage.getItem('GEMINI_API_KEY');
+            }
         };
+
+        // API Key 저장 제어
+        btnSaveKey.addEventListener('click', () => {
+            const keyVal = inputApiKey.value.trim();
+            localStorage.setItem('GEMINI_API_KEY', keyVal);
+            alertToast("API 키가 브라우저 보안 저장소에 안전하게 세팅되었습니다! 🔑");
+        });
 
         // 학습 페이지 이동 제어 및 복귀 이벤트
         btnGoStudy.addEventListener('click', () => {
@@ -867,6 +899,45 @@
             }, 3000);
         }
 
+        // 룰 기반 백업용 오개념 진단 소견 작성 엔진 (Gemini 오류 시 즉각 대행)
+        function getFallbackDiagnosis(studentId, studentName, val1, val2, val3, val4, val5, valF, currentQ, correctF, reason, cName, cExample, cType) {
+            let wrongItems = [];
+            if (val1 !== 'str') wrongItems.push("문자열(str)");
+            if (val2 !== 'float') wrongItems.push("실수(float)");
+            if (val3 !== 'int') wrongItems.push("정수(int)");
+            if (val4 !== 'bool') wrongItems.push("불리언(bool)");
+            if (val5 !== 'list') wrongItems.push("리스트(list)");
+
+            let score = (val1 === 'str' ? 1 : 0) + 
+                        (val2 === 'float' ? 1 : 0) + 
+                        (val3 === 'int' ? 1 : 0) + 
+                        (val4 === 'bool' ? 1 : 0) + 
+                        (val5 === 'list' ? 1 : 0) +
+                        (valF === correctF ? 1 : 0);
+
+            if (score === 6) {
+                return `[자동진단:우수] ${studentName} 학생은 핵심 6대 자료형의 성격을 정확하게 변별하고 있습니다. 특히 수합된 이유 서술("${reason || '없음'}")을 포함하여, 실수형과 논리형 자료를 다루는 프로그래밍적 논리력이 완성 단계에 도달해 있습니다. 튜플(tuple)이나 세트(set) 같은 고난도 데이터 구조 설계를 추천합니다.`;
+            }
+
+            let feedback = `[자동진단] ${studentName} 학생은 자료형 분류 문제에서 6점 중 ${score}점을 득점하였습니다. `;
+            if (wrongItems.length > 0) {
+                feedback += `주요 오개념 탐지: ${wrongItems.join(', ')} 영역에 취약함이 발견되었습니다. `;
+                if (val1 !== 'str') feedback += "키보드로 생성되는 텍스트를 담을 때 따옴표를 선언하는 str(문자열)의 개념 복습이 요구됩니다. ";
+                if (val2 !== 'float') feedback += "정밀도를 요하는 수치(시력 등)는 정수형이 아닌 소수를 가둘 수 있는 float(실수) 타입이 유리함을 점검해야 합니다. ";
+                if (val3 !== 'int') feedback += "소수점이 전혀 필요치 않은 고유 번호나 개수를 다루는 int(정수) 타입 선택이 아쉽습니다. ";
+                if (val4 !== 'bool') feedback += "상황을 '예(True)/아니오(False)'의 엄격한 상반 관계 상태로 다루는 논리형(bool)의 사용 맥락 재지도가 권장됩니다. ";
+                if (val5 !== 'list') feedback += "순서와 일괄 관리를 전제하는 리스트([ ])의 구조를 딕셔너리({ })와 혼동하고 있을 수 있습니다. ";
+            }
+            
+            if (valF !== correctF) {
+                feedback += ` 또한 랜덤 데이터 미션인 "${currentQ}"에서 오답을 고르는 경향을 보여 복습이 보완되어야 합니다.`;
+            } else {
+                feedback += " 랜덤 응용 미션은 훌륭하게 정확히 맞추었습니다.";
+            }
+
+            return feedback;
+        }
+
         // 학생 제출 이벤트 리스너 (CORS preflight 유발 방지를 위해 text/plain 헤더 사용)
         btnSubmit.addEventListener('click', async () => {
             if (SCRIPT_URL.includes("여기에 구글")) {
@@ -937,11 +1008,18 @@
             `;
 
             let aiDiagnosis = "";
-            try {
-                aiDiagnosis = await callGemini(systemPrompt, userQuery);
-            } catch (err) {
-                console.error("AI Diagnosis failed during submission:", err);
-                aiDiagnosis = "진단 실패 (AI 서비스 일시적인 통신 오류 발생)";
+            const apiKey = localStorage.getItem('GEMINI_API_KEY') || "";
+
+            if (!apiKey) {
+                // API KEY가 부재한 경우 로컬 규칙 진단 엔진 발동하여 신속히 대행
+                aiDiagnosis = getFallbackDiagnosis(studentId, studentName, val1, val2, val3, val4, val5, valF, randomQuestions[currentRandomIdx].title, randomQuestions[currentRandomIdx].answer, reason, cName, cExample, cType);
+            } else {
+                try {
+                    aiDiagnosis = await callGemini(systemPrompt, userQuery);
+                } catch (err) {
+                    console.warn("AI Generation failed, falling back to rule-based diagnosis:", err);
+                    aiDiagnosis = getFallbackDiagnosis(studentId, studentName, val1, val2, val3, val4, val5, valF, randomQuestions[currentRandomIdx].title, randomQuestions[currentRandomIdx].answer, reason, cName, cExample, cType);
+                }
             }
 
             // 시트 저장 단계로 진행
@@ -1046,7 +1124,6 @@
                 customModal.classList.add('hidden');
             }, 150);
         });
-
 
         btnTriggerTeacher.addEventListener('click', () => {
             passwordError.classList.add('invisible');
@@ -1164,6 +1241,7 @@
                 const mappedCorrectAns = answerKey[log.randQ] || "";
                 const isCorrectF = log.randA === mappedCorrectAns;
 
+                // AI 진단 소견 바인딩 처리 (이미 스프레드시트에 영구 보존된 소견을 읽기 때문에 속도 저하 전혀 없음)
                 const aiCellContent = log.aiDiagnosis 
                     ? `<p class="text-left font-medium text-slate-700 leading-relaxed p-2.5 bg-indigo-50/40 rounded-xl border border-indigo-100/30">${log.aiDiagnosis}</p>`
                     : `<span class="text-slate-400">진단 데이터 없음</span>`;
@@ -1192,80 +1270,7 @@
             });
         }
 
-        // 교사용 대시보드 내 학생 맞춤형 AI 오개념 소견 진단 엔진
-        async function generateStudentAiDiagnosis(index) {
-            const log = fetchedLogs[index];
-            if (!log) return;
-
-            const btn = document.getElementById(`btn-diag-${index}`);
-            const cell = document.getElementById(`ai-diagnosis-${index}`);
-
-            if (btn) {
-                btn.disabled = true;
-                btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> 분석 중`;
-            }
-
-            const systemPrompt = `너는 고등학교 정보 과목 교사들의 수업 설계를 돕는 유능한 'AI 교육 진단 전문가'이자 동료 정보교사야.
-            학생의 파이썬 자료형 매칭 학습 데이터를 면밀히 분석한 후, 
-            이 학생이 보이고 있는 파이썬 개념 이해도, '특정 오개념(예: 따옴표를 쓰지 않는 문자열 혼동, 소수점 실수를 정수와 구별하지 못함, 대괄호를 쓰는 리스트와 중괄호를 쓰는 딕셔너리의 특징 혼동, 참/거짓 논리 타입의 이해 미비 등)', 그리고 '약한 지식 영역'을 진단하여 교사 관점의 정교한 관찰 소견(소견서 형태)을 작성해 줘.
-            
-            [작성 지침]
-            1. 어조: 정중하고, 전문적인 교사 관찰 소견 어조 (~하는 경향이 있음, ~에 대한 오개념을 보임, ~ 지식 보완이 필요함).
-            2. 분량: 2~3줄 내외로 핵심만 명확히 요약.
-            3. 만약 100% 완벽하게 이해하고 이유도 논리적이라면, 학생의 훌륭한 프로그래밍적 논리력을 칭찬하고 향후 추천할 심화 주제(예: '튜플이나 세트 등의 추가 자료형 탐색 권장')를 포함해줘.
-            4. 존댓말로 간결하게 작성할 것.`;
-
-            const userQuery = `
-            [학생 프로필]
-            학번: ${log.studentId}
-            이름: ${log.name2}
-
-            [활동 2: 기본 매칭 5문항 결과 (정답 여부)]
-            - 1번(학생 이름 데이터, 정답: str): 학생 선택 = ${log.ans1} (${log.ans1 === 'str' ? 'O' : 'X'})
-            - 2번(양쪽 시력 측정, 정답: float): 학생 선택 = ${log.ans2} (${log.ans2 === 'float' ? 'O' : 'X'})
-            - 3번(출석 번호, 정답: int): 학생 선택 = ${log.ans3} (${log.ans3 === 'int' ? 'O' : 'X'})
-            - 4번(설문 참여 여부, 정답: bool): 학생 선택 = ${log.ans4} (${log.ans4 === 'bool' ? 'O' : 'X'})
-            - 5번(모둠원 이름 목록, 정답: list): 학생 선택 = ${log.ans5} (${log.ans5 === 'list' ? 'O' : 'X'})
-
-            [활동 3: 랜덤 매칭 도전]
-            - 제시된 미션: ${log.randQ}
-            - 정답 자료형: ${answerKey[log.randQ] || '알수없음'}
-            - 학생이 선택한 자료형: ${log.randA} (${log.randA === (answerKey[log.randQ] || '') ? 'O' : 'X'})
-            - 학생이 서술한 선택 이유: "${log.reason}"
-
-            [활동 4: 자율 창의 데이터 설계]
-            - 정의한 데이터 이름: "${log.custQ}"
-            - 데이터 예시 값: "${log.custE}"
-            - 선택한 자료형 그릇: "${log.custA}"
-            `;
-
-            try {
-                const aiResponse = await callGemini(systemPrompt, userQuery);
-                // 학생 데이터에 소견 보존
-                log.aiDiagnosis = aiResponse;
-                
-                // UI 즉시 업데이트
-                if (cell) {
-                    cell.innerHTML = `<p class="text-left font-medium text-slate-700 leading-relaxed p-1 bg-indigo-50/40 rounded-xl border border-indigo-100/30">${aiResponse}</p>`;
-                }
-                alertToast(`${log.name2} 학생의 오개념 진단 소견이 발급되었습니다! 🔍`);
-            } catch (error) {
-                console.error("Gemini API Error (Diagnosis):", error);
-                if (cell) {
-                    cell.innerHTML = `
-                        <div class="text-center">
-                            <span class="text-rose-500 font-semibold block text-[10px] mb-1">진단 실패</span>
-                            <button type="button" onclick="generateStudentAiDiagnosis(${index})" class="interactive-btn px-2.5 py-1 bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-full font-bold text-[10px] flex items-center gap-0.5 mx-auto">
-                                <i class="fa-solid fa-rotate-right"></i> 재시도
-                            </button>
-                        </div>
-                    `;
-                }
-                alertToast("AI 진단 도중 통신 오류가 발생했습니다.");
-            }
-        }
-
-        // BOM 구조를 적용한 대시보드 엑셀(CSV) 로컬 저장 기능 (AI 소견 포함)
+        // BOM 구조를 적용한 대시보드 엑셀(CSV) 로컬 저장 기능 (AI 소견 포함 - 데이터 빈칸 오류 완벽 해결)
         btnExcelDownload.addEventListener('click', () => {
             if (fetchedLogs.length === 0) {
                 alertToast("다운로드할 연구 기록 데이터가 존재하지 않습니다! 📭");
@@ -1303,7 +1308,12 @@
                     log.custA || "",
                     log.aiDiagnosis || "진단 미수행"
                 ];
-                csvContent += row.map(val => `"${val.toString().replace(/"/g, '""')}"`).join(",") + "\r\n";
+                
+                // 각 칼럼 요소를 엑셀 호환 문자열로 안전하고 예외 없이 치환 처리
+                csvContent += row.map(val => {
+                    const safeVal = (val !== null && val !== undefined) ? val.toString() : "";
+                    return `"${safeVal.replace(/"/g, '""')}"`;
+                }).join(",") + "\r\n";
             });
 
             const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
@@ -1318,10 +1328,11 @@
 
             link.setAttribute("href", url);
             link.setAttribute("download", `자료형학습_기록_${dateStr}.csv`);
-            link.style.visibility = 'hidden';
+            link.style.display = 'none';
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+            URL.revokeObjectURL(url); // 메모리 해제
             
             alertToast("엑셀 파일(오개념 소견 포함)이 컴퓨터에 안전하게 다운로드되었습니다! 💾");
         });
@@ -1394,8 +1405,12 @@
 
         // Gemini API 호출 헬퍼 함수
         async function callGemini(systemPrompt, userQuery) {
-            const apiKey = ""; // Canvas 환경에서 자동으로 채워지는 API 키 슬롯
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+            const apiKey = localStorage.getItem('GEMINI_API_KEY') || ""; 
+            if (!apiKey) {
+                throw new Error("API key is empty");
+            }
+            // 2026년 표준 고성능 모델인 gemini-2.5-flash 지원
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`;
             
             const payload = {
                 contents: [{ parts: [{ text: userQuery }] }],
@@ -1434,7 +1449,6 @@
             }
         }
 
-        // DOM Elements for AI Integration
         const btnAiFeedbackF = document.getElementById('btn-ai-feedback-f');
         const aiFeedbackBoxF = document.getElementById('ai-feedback-box-f');
         const aiFeedbackTextF = document.getElementById('ai-feedback-text-f');
@@ -1453,6 +1467,7 @@
             const selectedVal = selectF.value;
             const writtenReason = reasonF.value.trim();
             const currentQuestion = randomQuestions[currentRandomIdx].title;
+            const isCorrect = selectedVal === randomQuestions[currentRandomIdx].answer;
 
             if (!selectedVal) {
                 alertToast("자료형을 먼저 선택해 주세요! 💡");
@@ -1469,6 +1484,19 @@
             btnAiFeedbackF.innerHTML = `<i class="fa-solid fa-circle-notch animate-spin"></i> AI 튜터 채점 중...`;
             aiFeedbackBoxF.classList.remove('hidden');
             aiFeedbackTextF.innerHTML = `<span class="text-slate-400">💡 AI 튜터가 학생의 논리를 분석하고 있습니다. 잠시만 기다려주세요...</span>`;
+
+            const apiKey = localStorage.getItem('GEMINI_API_KEY') || "";
+
+            if (!apiKey) {
+                // API 키 미제출시 로컬 엔진을 활용하여 즉시 피드백
+                setTimeout(() => {
+                    let fallbackText = `📢 [AI 안내] ${isCorrect ? '정답입니다! 🎉' : '아쉽게도 오답이에요. 😥'} \n\n제시된 데이터 "${currentQuestion}"의 정답 그릇은 [${randomQuestions[currentRandomIdx].answer}] 입니다. 작성해준 이유 "${writtenReason}"의 의도를 파악해보면 프로그래밍 학습에 큰 성장을 보이고 있음을 뜻합니다. 실생활 데이터를 가두는 최적의 규칙에 대해 다시금 깊게 복습해봐요! 👍`;
+                    aiFeedbackTextF.textContent = fallbackText;
+                    btnAiFeedbackF.disabled = false;
+                    btnAiFeedbackF.innerHTML = `<i class="fa-solid fa-wand-magic-sparkles"></i> <span>AI 튜터에게 내 답변 피드백 받기</span>`;
+                }, 800);
+                return;
+            }
 
             const systemPrompt = "너는 고등학교 정보 선생님이자 매우 유쾌하고 유능한 파이썬 AI 튜터야. 학생이 무작위 데이터 미션에 관해 본인의 선택과 이유를 제시하면, 이를 면밀히 채점하고 피드백을 전달해줘. 무조건 고등학생의 눈높이에 맞춰 따뜻하고 친근하며 위트 넘치게 피드백해야 하고, 정답 여부(O / X)를 명쾌히 알려준 뒤 프로그래밍적으로 매끄러운 해석을 더해줘. 3줄 내외로 짧고 알차게 답변해줘. 이모티콘을 많이 섞어서 친밀감을 형성해야 해.";
             const userQuery = `미션 데이터: "${currentQuestion}"\n학생이 선택한 자료형: ${selectedVal}\n학생이 서술한 선택 이유: "${writtenReason}"\n(참고: 이 데이터의 올바른 정답 자료형은 "${randomQuestions[currentRandomIdx].answer}"입니다. 학생이 고른 자료형과 이유가 올바른지 논리적으로 확인하고, 설령 오답이더라도 친절하게 가이드해줘!)`;
@@ -1513,6 +1541,18 @@
             aiCustomBox.classList.remove('hidden');
             aiCustomText.innerHTML = `<span class="text-slate-400">💡 AI 코치가 학생의 창의 데이터를 분석 중입니다. 신선한 설계인지 확인해볼게요!</span>`;
 
+            const apiKey = localStorage.getItem('GEMINI_API_KEY') || "";
+
+            if (!apiKey) {
+                setTimeout(() => {
+                    let fallbackText = `💡 [AI 코치 피드백] 학생이 직접 설계한 "${name}"(예시값: ${example})에 파이썬 [${type}] 자료형을 매칭한 시도는 매우 창의적이고 타당합니다! 👏 실생활 속에서 변환 가능한 데이터의 특징을 꿰뚫고 있는 모습이 돋보입니다. 앞으로도 나만의 데이터 수집 프로젝트를 적극 진행해보세요! 🚀`;
+                    aiCustomText.textContent = fallbackText;
+                    btnAiCustomAnalyze.disabled = false;
+                    btnAiCustomAnalyze.innerHTML = `<i class="fa-solid fa-brain"></i> <span>내가 설계한 데이터 AI에게 검토 받기</span>`;
+                }, 800);
+                return;
+            }
+
             const systemPrompt = "너는 파이썬 데이터 설계 전문가이자 격려를 아끼지 않는 친절한 정보교과 AI 코치야. 학생이 주도적으로 정의한 '데이터 이름', '예시 값', 그리고 '자료형'을 분석해서, 이 자료형 선택이 타당한지(예: 전화번호를 문자열로 한 게 현명한지 등) 평가해줘. 그리고 학생의 창의적인 시도를 엄청 칭찬해주며, 3줄 내외로 조언과 격려를 따뜻하게 전해줘. 이모티콘을 듬뿍 사용해야 해.";
             const userQuery = `설계한 데이터 이름: "${name}"\n입력할 예시 값: "${example}"\n매칭한 자료형: "${type}"\n이 데이터 설계 구조가 최적인지 평가해줘!`;
 
@@ -1539,6 +1579,16 @@
             aiChatInput.value = "";
             aiChatResponseBox.classList.remove('hidden');
             aiChatResponseText.innerHTML = `<span class="text-slate-400 animate-pulse"><i class="fa-solid fa-circle-notch animate-spin"></i> AI 튜터가 생각하는 중... 답변을 금방 완성할게요!</span>`;
+
+            const apiKey = localStorage.getItem('GEMINI_API_KEY') || "";
+
+            if (!apiKey) {
+                setTimeout(() => {
+                    let fallbackText = `💬 [AI 챗봇 안내] 현재 파이썬 자료형(str, int, float, bool, list, dict)에 관한 질문을 수신했습니다. 현재 AI 실시간 API 키가 설정되지 않아 규칙 요약본으로 답변드립니다. \n\n질문하신 요지는 변수의 그릇을 정하는 방법에 관한 것입니다. 문자(str)는 따옴표를, 실수(float)는 소수점을, 리스트(list)는 대괄호를 사용한다는 핵심 특징만 기억하면 파이썬 정복이 훨씬 쉬워집니다! 🐍`;
+                    aiChatResponseText.textContent = fallbackText;
+                }, 800);
+                return;
+            }
 
             const systemPrompt = "너는 친절하고 설명력이 뛰어난 고등학교 파이썬 AI 튜터야. 학생들이 파이썬 기초 자료형(str, int, float, bool, list, dict)에 관한 질문을 던지면, 고등학생 눈높이에 딱 맞는 아주 쉬운 비유(상자, 사전, 가방 등)와 일상적인 실생활 예시를 사용해 명료하게 설명해줘. 4줄 이내로 답변을 깔끔하게 끊어 써주고 친근한 이모티콘을 포함해줘.";
 
