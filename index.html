@@ -270,7 +270,7 @@
                 </div>
             </div>
 
-            <!-- 자료형 선택 이유 입력창 (가로 100% 꽉 찬 디자인) -->
+            <!-- 자료형 선택 이유 입력창 -->
             <div class="w-full">
                 <label for="reason-f" class="block text-xs font-bold text-slate-600 mb-2 pl-2">
                     💡 이 자료형을 선택한 이유 <span class="text-[10px] font-normal text-slate-400">(상세하고 명확히 설명해 주세요)</span>
@@ -326,6 +326,71 @@
                             <option value="dict">dict (딕셔너리)</option>
                         </select>
                     </div>
+                </div>
+
+                <div>
+                    <label for="custom-data-reason" class="block text-xs font-bold text-teal-800 mb-2 pl-1">
+                        4단계: 이 자료형을 선택한 이유와 합리적 근거 <span class="text-[10px] font-normal text-teal-600">(상세히 설명해 주세요)</span>
+                    </label>
+                    <textarea id="custom-data-reason" rows="2" 
+                              class="w-full px-5 py-4 bg-white border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-teal-500 text-xs transition duration-150 placeholder-slate-400 resize-none leading-relaxed font-medium"
+                              placeholder="예: 배터리 잔량 수치는 소수점이 없는 0부터 100 사이의 숫자로만 표현되므로, 연산 속도와 공간 절약 관점에서 정수(int)형이 가장 알맞습니다."></textarea>
+                </div>
+            </div>
+        </section>
+
+        <!-- 활동 5: AI 융합 심화 미션 (선택 활동) -->
+        <section class="w-full bg-white rounded-3xl p-6 shadow-sm border border-slate-100 flex flex-col gap-5">
+            <div class="flex items-center gap-3 border-b border-slate-50 pb-4">
+                <span class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-black text-sm">5</span>
+                <div>
+                    <h2 class="text-base font-bold text-slate-800">활동 5: AI 융합 심화 챌린지 (선택)</h2>
+                    <p class="text-xs text-slate-400">학습 속도가 빠른 학생들을 위해 AI가 제안하는 고난도 실생활 데이터 엔지니어링 미션입니다.</p>
+                </div>
+            </div>
+
+            <!-- AI 미션 셀렉터 탭 -->
+            <div class="flex flex-col gap-4">
+                <label class="block text-xs font-bold text-slate-600 pl-1">🎯 실시간 AI 추천 심화 주제 선택</label>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                    <button type="button" id="btn-ai-mission-1" class="interactive-btn p-3 bg-indigo-600 text-white rounded-2xl text-xs font-bold transition text-center" onclick="selectAiMission(1)">
+                        🚀 스마트 IoT 센서
+                    </button>
+                    <button type="button" id="btn-ai-mission-2" class="interactive-btn p-3 bg-slate-50 border border-slate-100 rounded-2xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition text-center" onclick="selectAiMission(2)">
+                        🎬 OTT 미디어 서비스
+                    </button>
+                    <button type="button" id="btn-ai-mission-3" class="interactive-btn p-3 bg-slate-50 border border-slate-100 rounded-2xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition text-center" onclick="selectAiMission(3)">
+                        🚁 자율주행 드론
+                    </button>
+                </div>
+
+                <!-- AI 미션 카드 인터랙티브 창 -->
+                <div class="bg-gradient-to-br from-indigo-950 to-slate-900 text-slate-100 p-5 rounded-2xl shadow-inner relative overflow-hidden border border-indigo-900/50">
+                    <div class="absolute -right-8 -bottom-8 opacity-10 text-8xl font-black text-indigo-400">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div class="relative z-10 flex flex-col gap-2.5">
+                        <div class="flex items-center gap-2">
+                            <span class="bg-indigo-500/30 text-indigo-300 border border-indigo-400/30 text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase tracking-widest animate-pulse">
+                                AI TUTOR CHALLENGE
+                            </span>
+                            <span id="ai-mission-badge" class="text-amber-400 text-xs font-bold">난이도: ★★★★☆</span>
+                        </div>
+                        <h3 id="ai-mission-title" class="font-extrabold text-sm text-white">미션 1: 스마트 IoT 센서 허브 구축</h3>
+                        <p id="ai-mission-prompt" class="text-xs text-slate-300 leading-relaxed font-medium">
+                            어느 한 스마트 홈의 주방 센서가 수집한 미세먼지 농도(32.5), 가스 누출 여부(True), 센서 고유 코드('KIT-09')를 하나의 파이썬 변수에 묶어서 보관하려 합니다. 최적의 데이터 타입과 선언 코드 구조를 설명해 보세요.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- AI 미션 응답 서술 -->
+                <div>
+                    <label for="ai-mission-response" class="block text-xs font-bold text-slate-600 mb-2 pl-2">
+                        💻 AI 심화 해결 보고서 작성 <span class="text-[10px] font-normal text-slate-400">(해결 방법과 대입 코드를 서술해 주세요)</span>
+                    </label>
+                    <textarea id="ai-mission-response" rows="3" 
+                              class="w-full px-5 py-4 bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white text-xs transition duration-150 placeholder-slate-400 resize-none leading-relaxed font-medium font-mono"
+                              placeholder="예: 딕셔너리 구조가 가장 적절합니다. data = {'fine_dust': 32.5, 'gas_leak': True, 'id': 'KIT-09'} 형태로 선언하면 고유 키값을 통해 각 정보의 의미를 정확히 지정할 수 있습니다."></textarea>
                 </div>
             </div>
         </section>
@@ -616,7 +681,7 @@
 
             <!-- 가로 모바일 스크롤 테이블 포장 -->
             <div class="w-full overflow-x-auto rounded-2xl border border-slate-100">
-                <table class="w-full min-w-[1700px] text-left border-collapse">
+                <table class="w-full min-w-[2100px] text-left border-collapse">
                     <thead>
                         <tr class="bg-slate-50 text-slate-500 font-extrabold text-xs uppercase border-b border-slate-100">
                             <th class="px-4 py-3.5 text-center">순서</th>
@@ -636,6 +701,9 @@
                             <th class="px-4 py-3.5">창의 데이터 이름</th>
                             <th class="px-4 py-3.5">창의 예시 값</th>
                             <th class="px-4 py-3.5 text-center">창의 선택 자료형</th>
+                            <th class="px-4 py-3.5">창의선택근거</th>
+                            <th class="px-4 py-3.5">챌린지선택</th>
+                            <th class="px-4 py-3.5">챌린지보고서</th>
                         </tr>
                     </thead>
                     <tbody id="dashboard-table-body" class="text-xs text-slate-600 divide-y divide-slate-100">
@@ -768,6 +836,26 @@
             { title: "어느 한 학생의 구체적 인적 사항 정보", desc: "예시: {'이름': '홍길동', '나이': 18, '성별': '남'}", answer: "dict" }
         ];
 
+        // AI 심화 활동을 위한 고난도 미션 3종 세트
+        const aiMissions = {
+            1: {
+                title: "미션 1: 스마트 IoT 센서 허브 구축",
+                prompt: "어느 한 스마트 홈의 주방 센서가 수집한 미세먼지 농도(32.5), 가스 누출 여부(True), 센서 고유 코드('KIT-09')를 하나의 파이썬 변수에 묶어서 보관하려 합니다. 최적의 데이터 타입과 선언 코드 구조를 설명해 보세요.",
+                badge: "난이도: ★★★★☆"
+            },
+            2: {
+                title: "미션 2: OTT 서비스 추천 엔진 알고리즘",
+                prompt: "넷플릭스 스타일의 OTT 플랫폼에서 사용자의 시청 선호 장르 리스트(['SF', '액션', '스릴러'])와 구독 갱신 여부(False)를 동시에 관리하려고 합니다. 이 데이터들의 성격 분석과 최적 자료형 선언 방법을 변수 선언 코드로 유추하고 서술하세요.",
+                badge: "난이도: ★★★★☆"
+            },
+            3: {
+                title: "미션 3: 자율주행 드론 위치 추적기",
+                prompt: "배송용 자율주행 드론이 주행 중 현재 비행체의 GPS 위도/경도 정보(37.5665, 126.9780)와 실시간 고도 수치(150.8미터)를 계속 측정해야 합니다. 소수점을 다루는 실수형(float)의 나열을 어떤 자료구조로 설계할 때 가독성이 높은지 파이썬 문법의 장단점을 논하세요.",
+                badge: "난이도: ★★★★★"
+            }
+        };
+        let currentAiMissionNum = 1;
+
         // 랜덤 미션 정답 매칭 맵
         const answerKey = {
             "우리 동네 오늘의 실시간 대기 미세먼지 수치 데이터": "float",
@@ -827,6 +915,8 @@
         const customDataName = document.getElementById('custom-data-name');
         const customDataExample = document.getElementById('custom-data-example');
         const customDataType = document.getElementById('custom-data-type');
+        const customDataReason = document.getElementById('custom-data-reason'); 
+        const aiMissionResponse = document.getElementById('ai-mission-response'); 
         
         const randomTitleEl = document.getElementById('random-data-title');
         const randomDescEl = document.getElementById('random-data-desc');
@@ -879,6 +969,27 @@
         window.onload = function() {
             setRandomQuestion();
         };
+
+        // AI 미션 전환 함수
+        function selectAiMission(num) {
+            currentAiMissionNum = num;
+            const m = aiMissions[num];
+            document.getElementById('ai-mission-title').textContent = m.title;
+            document.getElementById('ai-mission-prompt').textContent = m.prompt;
+            document.getElementById('ai-mission-badge').textContent = m.badge;
+
+            // 선택된 단추 활성화 상태 스타일 조절
+            for (let i = 1; i <= 3; i++) {
+                const btn = document.getElementById(`btn-ai-mission-${i}`);
+                if (btn) {
+                    if (i === num) {
+                        btn.className = "interactive-btn p-3 bg-indigo-600 text-white rounded-2xl text-xs font-bold transition text-center";
+                    } else {
+                        btn.className = "interactive-btn p-3 bg-slate-50 border border-slate-100 rounded-2xl text-xs font-bold text-slate-600 hover:bg-slate-100 transition text-center";
+                    }
+                }
+            }
+        }
 
         // 학습 페이지 이동 제어 및 복귀 이벤트
         btnGoStudy.addEventListener('click', () => {
@@ -996,6 +1107,9 @@
             const cName = customDataName.value.trim();
             const cExample = customDataExample.value.trim();
             const cType = customDataType.value;
+            const cReason = customDataReason.value.trim(); 
+            const aiResp = aiMissionResponse.value.trim(); 
+            const aiTitle = aiMissions[currentAiMissionNum].title;
 
             showLoader(true, "구글 시트에 배달 중...", "학생의 연구 데이터를 구글 스프레드시트에 영구 저장하고 있습니다.");
 
@@ -1018,7 +1132,12 @@
                 custom: {
                     name: cName || "(미작성)",
                     example: cExample || "(미작성)",
-                    type: cType || "(미선택)"
+                    type: cType || "(미선택)",
+                    reason: cReason || "(미서술)"
+                },
+                aiMission: { 
+                    title: aiTitle || "(미선택)",
+                    response: aiResp || "(미서술)"
                 }
             };
 
@@ -1050,7 +1169,7 @@
                         <span class="text-sm font-extrabold text-indigo-600 block mb-2">${studentName} 학생 전송 성공</span>
                         <strong>선생님에게 연구내용이 배달되었습니다! 오늘도 좋은 하루 보내요.</strong>
                         <div class="mt-4 p-3 bg-slate-50 rounded-2xl border border-slate-100 text-xs text-slate-500 font-medium">
-                            매칭 채점 결과: <span class="text-indigo-600 font-extrabold">${score} / 6점</span>
+                            기본/스페셜 매칭 채점 결과: <span class="text-indigo-600 font-extrabold">${score} / 6점</span>
                         </div>
                     `);
                 } else {
@@ -1076,6 +1195,9 @@
             customDataName.value = "";
             customDataExample.value = "";
             customDataType.value = "";
+            customDataReason.value = ""; 
+            aiMissionResponse.value = ""; 
+            selectAiMission(1); 
             setRandomQuestion();
         }
 
@@ -1176,7 +1298,7 @@
             });
         }
 
-        // 16개 고유 컬럼 구조 테이블 드로잉
+        // 20개 고유 컬럼 구조 테이블 드로잉
         function renderDashboardTable(logs) {
             dashboardTableBody.innerHTML = "";
             const safeLogs = Array.isArray(logs) ? logs : [];
@@ -1185,7 +1307,7 @@
             if (safeLogs.length === 0) {
                 dashboardTableBody.innerHTML = `
                     <tr>
-                        <td colspan="17" class="py-16 text-center text-slate-400 font-bold">
+                        <td colspan="20" class="py-16 text-center text-slate-400 font-bold">
                             <i class="fa-solid fa-folder-open text-4xl text-slate-300 block mb-3"></i>
                             아직 배달된 자료가 없어요 📭
                         </td>
@@ -1233,6 +1355,9 @@
                     <td class="px-4 py-4 font-bold text-teal-700">${log.custQ || "(미작성)"}</td>
                     <td class="px-4 py-4 text-slate-600 font-medium">${log.custE || ""}</td>
                     <td class="px-4 py-4 text-center whitespace-nowrap"><span class="bg-slate-100 text-slate-700 font-bold px-2.5 py-1 rounded-full">${log.custA || "(미선택)"}</span></td>
+                    <td class="px-4 py-4 text-slate-600 min-w-[200px] max-w-sm overflow-hidden text-ellipsis">${log.custR || "(미서술)"}</td>
+                    <td class="px-4 py-4 font-bold text-indigo-700 whitespace-nowrap">${log.aiQ || "(선택안함)"}</td>
+                    <td class="px-4 py-4 italic text-slate-500 min-w-[250px] max-w-md overflow-hidden text-ellipsis">${log.aiA || "(미작성)"}</td>
                 `;
                 dashboardTableBody.appendChild(tr);
             });
@@ -1246,12 +1371,13 @@
                 return;
             }
 
-            // 진단을 제외한 16가지 고유 항목 헤더 배치
+            // 진단을 제외한 19가지 고유 항목 헤더 배치
             const headers = [
                 "응답 일시", "이름(Sheet)", "날짜와 시간", "학번", "이름", 
                 "1번(이름) 선택", "2번(시력) 선택", "3번(번호) 선택", "4번(설문) 선택", "5번(모둠) 선택",
                 "랜덤 데이터 이름", "랜덤 데이터 선택", "선택한 이유",
-                "창의 데이터 이름", "창의 예시 값", "창의 선택 자료형"
+                "창의 데이터 이름", "창의 예시 값", "창의 선택 자료형",
+                "창의 선택 자료형 이유", "AI 심화 미션 주제", "AI 심화 해결 보고서"
             ];
 
             let csvContent = "\ufeff"; // 한글 깨짐 방지 UTF-8 BOM 주입
@@ -1285,7 +1411,10 @@
                     cleanCsvCell(log.reason),
                     cleanCsvCell(log.custQ),
                     cleanCsvCell(log.custE),
-                    cleanCsvCell(log.custA)
+                    cleanCsvCell(log.custA),
+                    cleanCsvCell(log.custR), 
+                    cleanCsvCell(log.aiQ),   
+                    cleanCsvCell(log.aiA)    
                 ];
                 
                 csvContent += row.map(val => `"${val}"`).join(",") + "\r\n";
@@ -1303,12 +1432,12 @@
             try {
                 const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8' });
                 
-                // 1단계: 브라우저 기본 Blob 저장 다운로드 시도 ( target="_blank" 추가하여 보안 샌드박스 완화 )
+                // 1단계: 브라우저 기본 Blob 저장 다운로드 시도
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement("a");
                 link.href = url;
                 link.download = filename;
-                link.target = "_blank"; // 다운로드 강제 우회용
+                link.target = "_blank"; 
                 link.style.display = 'none';
                 
                 document.body.appendChild(link);
